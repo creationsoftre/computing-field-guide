@@ -123,3 +123,28 @@ main {
   font-size: 1.1rem;
   line-height: 1.7;
 }
+
+.input-control {
+  display: grid;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.input-control label {
+  font-size: 1.1rem;
+}
+
+.input-control input {
+  width: 100%;
+  cursor: pointer;
+}
+
+.input-example__items span {
+  transition:
+    transform 200ms ease,
+    opacity 200ms ease;
+}
+
+.input-example__items span:hover {
+  transform: translateY(-4px);
+}
