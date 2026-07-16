@@ -1,5 +1,6 @@
 import Hero from "./components/Hero";
 import BigOIntro from "./components/BigOIntro";
+import ComplexityComparison from "./components/ComplexityComparison";
 import "./App.css";
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <main>
       <Hero />
       <BigOIntro />
+      <ComplexityComparison />
     </main>
   );
 }
