@@ -13,7 +13,9 @@ function Hero() {
         data increases.
       </p>
 
-      <button type="button">Start Learning</button>
+        <a className="hero__button" href="#big-o-intro">
+            Start Learning
+        </a>
     </section>
   );
 }

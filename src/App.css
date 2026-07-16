@@ -41,16 +41,85 @@ main {
   color: #b8b8b8;
 }
 
-.hero button {
+.hero__button {
   padding: 0.9rem 1.5rem;
   border: 1px solid #f5f5f5;
   border-radius: 999px;
   background: transparent;
   color: #f5f5f5;
+  text-decoration: none;
   cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    transform 200ms ease;
 }
 
-.hero button:hover {
+.hero__button:hover {
   background-color: #f5f5f5;
   color: #111111;
+  transform: translateY(-3px);
+}
+
+.big-o-intro {
+  display: flex;
+  min-height: 100vh;
+  padding: 6rem 2rem;
+  align-items: center;
+  background-color: #f5f5f5;
+  color: #111111;
+}
+
+.big-o-intro__content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.15rem;
+  text-transform: uppercase;
+}
+
+.big-o-intro h2 {
+  max-width: 800px;
+  margin: 0;
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  line-height: 1;
+}
+
+.big-o-intro__definition {
+  max-width: 750px;
+  margin: 2rem 0 3rem;
+  font-size: 1.4rem;
+  line-height: 1.7;
+}
+
+.input-example {
+  padding: 2rem;
+  border: 1px solid #c8c8c8;
+  border-radius: 1.5rem;
+}
+
+.input-example__items {
+  display: flex;
+  margin-bottom: 2rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.input-example__items span {
+  padding: 0.8rem 1rem;
+  border-radius: 0.75rem;
+  background-color: #111111;
+  color: #f5f5f5;
+}
+
+.input-example p {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.7;
 }
