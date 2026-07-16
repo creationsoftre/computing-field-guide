@@ -1,9 +1,10 @@
-import complexityData from "../data/complexityData";
+import complexityData from "../data/ComplexityData";
 import ComplexityCard from "./ComplexityCard";
+import AnimatedSection from "./AnimatedSection";
 
 function ComplexityList() {
   return (
-    <section className="complexity-list">
+    <AnimatedSection className="complexity-list">
       <div className="complexity-list__content">
         <p className="section-label">Common Growth Rates</p>
 
@@ -29,7 +30,7 @@ function ComplexityList() {
           ))}
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
 

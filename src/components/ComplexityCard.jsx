@@ -10,18 +10,25 @@ function ComplexityCard({
 }) {
   return (
     <motion.article
-      className="complexity-info-card"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: 0.45,
-        delay: index * 0.06,
-      }}
-      viewport={{
-        once: true,
-        amount: 0.2,
-      }}
-    >
+        className="complexity-info-card"
+        initial={{
+            opacity: 0,
+            y: 24,
+        }}
+        whileInView={{
+            opacity: 1,
+            y: 0,
+        }}
+        data-gsap-card
+        transition={{
+            duration: 0.4,
+            delay: index * 0.05,
+        }}
+        viewport={{
+            once: true,
+            amount: 0.2,
+        }}
+        >
       <div className="complexity-info-card__header">
         <p className="complexity-info-card__notation">{notation}</p>
         <span>{rating}</span>

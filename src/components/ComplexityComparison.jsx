@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
+import AnimatedSection from "./AnimatedSection";
+import MotionSlider from "./MotionSlider";
 
 function ComplexityComparison() {
   const [inputSize, setInputSize] = useState(5);
@@ -12,7 +14,7 @@ function ComplexityComparison() {
   }
 
   return (
-    <section className="complexity-comparison">
+    <AnimatedSection className="complexity-comparison">
       <div className="complexity-comparison__content">
         <p className="section-label">Comparing Growth</p>
 
@@ -27,18 +29,21 @@ function ComplexityComparison() {
             Input size: <strong>n = {inputSize}</strong>
           </label>
 
-          <input
+          <MotionSlider
             id="comparison-input"
-            type="range"
             min="1"
             max="10"
             value={inputSize}
             onChange={handleInputSizeChange}
+            ariaLabel="Comparison input size"
           />
         </div>
 
         <div className="comparison-grid">
-          <article className="complexity-card">
+          <motion.article
+            className="complexity-card"
+            data-gsap-card
+          >
             <p className="complexity-card__notation">O(1)</p>
 
             <h3>Constant Time</h3>
@@ -60,19 +65,23 @@ function ComplexityComparison() {
 
             <div className="operation-visual" aria-hidden="true">
               <motion.span
+                layout
                 className="operation-block operation-block--active"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.25 }}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.2 }}
               />
             </div>
 
             <p className="complexity-card__example">
               Example: Accessing an array item using its index.
             </p>
-          </article>
+          </motion.article>
 
-          <article className="complexity-card">
+          <motion.article
+            className="complexity-card"
+            data-gsap-card
+          >
             <p className="complexity-card__notation">O(n)</p>
 
             <h3>Linear Time</h3>
@@ -107,9 +116,12 @@ function ComplexityComparison() {
             <p className="complexity-card__example">
               Example: Searching every item in an unsorted list.
             </p>
-          </article>
+          </motion.article>
 
-          <article className="complexity-card">
+          <motion.article
+            className="complexity-card"
+            data-gsap-card
+          >
             <p className="complexity-card__notation">O(n²)</p>
 
             <h3>Quadratic Time</h3>
@@ -131,6 +143,7 @@ function ComplexityComparison() {
             <div className="operation-visual" aria-hidden="true">
               {Array.from({ length: quadraticOperations }, (_, index) => (
                 <motion.span
+                  layout
                   className="operation-block operation-block--quadratic"
                   key={index}
                   initial={{ scale: 0, opacity: 0 }}
@@ -146,10 +159,10 @@ function ComplexityComparison() {
             <p className="complexity-card__example">
               Example: Comparing every car at a meet with every other car.
             </p>
-          </article>
+          </motion.article>
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
 

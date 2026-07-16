@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "motion/react";
+import MotionSlider from "./MotionSlider";
 
 const complexities = [
   {
@@ -348,13 +349,13 @@ function BigOGraph() {
               Change the input size
             </label>
 
-            <input
+            <MotionSlider
               id="graph-input"
-              type="range"
               min="1"
               max={chart.maximumInput}
               value={inputSize}
               onChange={handleInputChange}
+              ariaLabel="Graph input size"
             />
           </aside>
         </div>
@@ -375,6 +376,7 @@ function BigOGraph() {
                     : "graph-legend__button"
                 }
                 type="button"
+                data-gsap-button
                 key={complexity.id}
                 onClick={() =>
                   setSelectedComplexity(complexity.id)

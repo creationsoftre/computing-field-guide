@@ -1,4 +1,7 @@
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import AnimatedSection from "./AnimatedSection";
+import MotionSlider from "./MotionSlider";
 
 const carParts = [
   "Car Wheel",
@@ -21,7 +24,7 @@ function BigOIntro() {
   }
 
   return (
-    <section className="big-o-intro" id="big-o-intro">
+    <AnimatedSection className="big-o-intro" id="big-o-intro">
       <div className="big-o-intro__content">
         <p className="section-label">Understanding Big O</p>
 
@@ -38,20 +41,48 @@ function BigOIntro() {
               Number of items: <strong>{itemCount}</strong>
             </label>
 
-            <input
+            <MotionSlider
               id="item-count"
-              type="range"
               min="1"
               max={carParts.length}
               value={itemCount}
               onChange={handleItemCountChange}
+              ariaLabel="Number of items"
             />
           </div>
 
           <div className="input-example__items" aria-live="polite">
-            {visibleParts.map((part) => (
-              <span key={part}>{part}</span>
-            ))}
+            <AnimatePresence>
+              {visibleParts.map((part) => (
+                <motion.span
+                  key={part}
+                  layout
+                  initial={{
+                    opacity: 0,
+                    scale: 0.8,
+                    y: 8,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    scale: 0.8,
+                    y: -8,
+                  }}
+                  whileHover={{
+                    y: -4,
+                  }}
+                  transition={{
+                    duration: 0.22,
+                  }}
+                >
+                  {part}
+                </motion.span>
+              ))}
+            </AnimatePresence>
           </div>
 
           <p>
@@ -63,7 +94,7 @@ function BigOIntro() {
           </p>
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
 
