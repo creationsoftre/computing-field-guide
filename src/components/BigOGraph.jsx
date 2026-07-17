@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
 import { motion } from "motion/react";
 import MotionSlider from "./MotionSlider";
 
@@ -125,6 +126,8 @@ function createPath(calculate) {
 }
 
 function BigOGraph() {
+  const graphRef = useRef(null);
+  const graphHasDrawn = useRef(false);
   const [selectedComplexity, setSelectedComplexity] =
     useState("linear");
 
@@ -139,6 +142,83 @@ function BigOGraph() {
   function handleInputChange(event) {
     setInputSize(Number(event.target.value));
   }
+
+  useLayoutEffect(() => {
+    const graph = graphRef.current;
+
+    if (!graph) {
+      return undefined;
+    }
+
+    const paths = Array.from(graph.querySelectorAll(".graph__curve"));
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (reducedMotion) {
+      graphHasDrawn.current = true;
+      return undefined;
+    }
+
+    paths.forEach((path) => {
+      const length = path.getTotalLength();
+      gsap.set(path, {
+        strokeDasharray: `${length} ${length}`,
+        strokeDashoffset: length,
+      });
+    });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || graphHasDrawn.current) {
+          return;
+        }
+
+        graphHasDrawn.current = true;
+        gsap.to(paths, {
+          strokeDashoffset: 0,
+          duration: 1.5,
+          stagger: 0.12,
+          ease: "power2.inOut",
+        });
+        observer.disconnect();
+      },
+      { threshold: 0.35 },
+    );
+
+    observer.observe(graph);
+
+    return () => {
+      observer.disconnect();
+      gsap.killTweensOf(paths);
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!graphHasDrawn.current || !graphRef.current) {
+      return;
+    }
+
+    const path = graphRef.current.querySelector(
+      `[data-complexity="${selectedComplexity}"]`,
+    );
+
+    if (!path) {
+      return;
+    }
+
+    const length = path.getTotalLength();
+    gsap.fromTo(
+      path,
+      { strokeDasharray: `${length} ${length}`, strokeDashoffset: length },
+      {
+        strokeDashoffset: 0,
+        duration: 1,
+        ease: "power2.inOut",
+        overwrite: true,
+      },
+    );
+  }, [selectedComplexity]);
 
   return (
     <section className="big-o-graph">
@@ -155,6 +235,7 @@ function BigOGraph() {
         <div className="graph-layout">
           <div className="graph-panel">
             <svg
+              ref={graphRef}
               className="graph"
               viewBox={`0 0 ${chart.width} ${chart.height}`}
               role="img"
@@ -256,28 +337,16 @@ function BigOGraph() {
                 Approximate operations
               </text>
 
-              {complexities.map((complexity, index) => {
+              {complexities.map((complexity) => {
                 const isSelected =
                   complexity.id === selectedComplexity;
 
                 return (
-                  <motion.path
+                  <path
                     className="graph__curve"
+                    data-complexity={complexity.id}
                     d={createPath(complexity.calculate)}
                     key={complexity.id}
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    whileInView={{ pathLength: 1, opacity: 1 }}
-                    transition={{
-                      pathLength: {
-                        duration: 1,
-                        delay: index * 0.12,
-                      },
-                      opacity: {
-                        duration: 0.2,
-                        delay: index * 0.12,
-                      },
-                    }}
-                    viewport={{ once: true, amount: 0.4 }}
                     fill="none"
                     stroke={complexity.color}
                     strokeWidth={isSelected ? 6 : 3}

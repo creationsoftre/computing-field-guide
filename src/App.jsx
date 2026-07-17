@@ -4,6 +4,7 @@ import ComplexityComparison from "./components/ComplexityComparison";
 import ComplexityList from "./components/ComplexityList";
 import BigOGraph from "./components/BigOGraph";
 import GsapEffects from "./components/GsapEffects";
+import DataStructureComplexity from "./components/DataStructureComplexity";
 import "./App.css";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <ComplexityComparison />
       <ComplexityList />
       <BigOGraph />
+      <DataStructureComplexity />
     </main>
   );
 }
