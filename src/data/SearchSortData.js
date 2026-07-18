@@ -1,0 +1,88 @@
+const searchSortData = {
+  search: [
+    {
+      id: "linear-search",
+      name: "Linear Search",
+      summary: "Checks values one at a time until the target is found or the collection ends.",
+      best: "O(1)",
+      average: "O(n)",
+      worst: "O(n)",
+      space: "O(1)",
+      requirement: "Works with sorted or unsorted data",
+      useCase: "Small or unsorted collections, linked lists, and one-off searches.",
+      steps: [
+        "Start at the first value.",
+        "Compare the current value with the target.",
+        "Stop on a match; otherwise continue until no values remain.",
+      ],
+    },
+    {
+      id: "binary-search",
+      name: "Binary Search",
+      summary: "Repeatedly halves a sorted search range by comparing its middle value with the target.",
+      best: "O(1)",
+      average: "O(log n)",
+      worst: "O(log n)",
+      space: "O(1)",
+      requirement: "Requires sorted data and efficient indexed access",
+      useCase: "Repeated searches in sorted arrays or other indexable ordered data.",
+      steps: [
+        "Compare the target with the middle value.",
+        "Discard the half that cannot contain the target.",
+        "Repeat until a match is found or the range is empty.",
+      ],
+    },
+  ],
+  sort: [
+    {
+      id: "selection-sort",
+      name: "Selection Sort",
+      summary: "Selects the smallest remaining value and places it at the next sorted position.",
+      best: "O(n²)", average: "O(n²)", worst: "O(n²)", space: "O(1)",
+      stable: "No", requirement: "Simple, predictable, and minimizes swaps",
+      useCase: "Tiny datasets or situations where writes are more expensive than comparisons.",
+    },
+    {
+      id: "insertion-sort",
+      name: "Insertion Sort",
+      summary: "Builds a sorted prefix by inserting each new value into its correct position.",
+      best: "O(n)", average: "O(n²)", worst: "O(n²)", space: "O(1)",
+      stable: "Yes", requirement: "Adaptive when data is already nearly sorted",
+      useCase: "Small or nearly sorted datasets and as a helper inside hybrid sorts.",
+    },
+    {
+      id: "shell-sort",
+      name: "Shell Sort",
+      summary: "Runs insertion sort over shrinking gaps so distant values move toward their final positions early.",
+      best: "Depends on gaps", average: "~O(n^1.3)", worst: "O(n²)", space: "O(1)",
+      stable: "No", requirement: "Performance depends heavily on the gap sequence",
+      useCase: "Medium in-memory arrays when low extra space and simple code matter.",
+    },
+    {
+      id: "quick-sort",
+      name: "Quick Sort",
+      summary: "Partitions values around a pivot, then recursively sorts the values on either side.",
+      best: "O(n log n)", average: "O(n log n)", worst: "O(n²)", space: "O(log n)",
+      stable: "No", requirement: "Pivot choice determines how balanced partitions are",
+      useCase: "General-purpose in-memory sorting with excellent average performance.",
+    },
+    {
+      id: "merge-sort",
+      name: "Merge Sort",
+      summary: "Divides data into halves, sorts each half, then merges the sorted results.",
+      best: "O(n log n)", average: "O(n log n)", worst: "O(n log n)", space: "O(n)",
+      stable: "Yes", requirement: "Predictable time in exchange for auxiliary storage",
+      useCase: "Linked lists, stable sorting, external data, and guaranteed performance.",
+    },
+    {
+      id: "radix-sort",
+      name: "Radix Sort",
+      summary: "Groups keys by one digit or character position at a time instead of comparing pairs.",
+      best: "O(d(n + k))", average: "O(d(n + k))", worst: "O(d(n + k))", space: "O(n + k)",
+      stable: "Yes", requirement: "Fixed-format integers or strings; d digits and k possible values",
+      useCase: "Large collections of bounded-width integers, IDs, or similarly structured keys.",
+    },
+  ],
+};
+
+export default searchSortData;
