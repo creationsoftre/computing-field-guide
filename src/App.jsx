@@ -7,6 +7,7 @@ import GsapEffects from "./components/GsapEffects";
 import DataStructureComplexity from "./components/DataStructureComplexity";
 import SearchSortComplexity from "./components/SearchSortComplexity";
 import SortingByStructure from "./components/SortingByStructure";
+import StructuresByLanguage from "./components/StructuresByLanguage";
 import "./App.css";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
       <DataStructureComplexity />
       <SearchSortComplexity />
       <SortingByStructure />
+      <StructuresByLanguage />
     </main>
   );
 }

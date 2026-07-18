@@ -1,0 +1,61 @@
+const languageStructureData = {
+  Python: [
+    ["list", "Indexed sequence", "Index O(1); append O(1)*", "Medium", "General collections and dynamic arrays"],
+    ["tuple", "Fixed sequence", "Index O(1)", "Low", "Immutable records and dictionary keys"],
+    ["dict", "Key-value lookup", "Lookup O(1)", "High", "Mappings, caches, and object-like records"],
+    ["set / frozenset", "Unique membership", "Search O(1)", "High", "Deduplication and set operations"],
+    ["collections.deque", "Double-ended queue", "Ends O(1)", "Medium", "Queues, stacks, and sliding windows"],
+    ["heapq on list", "Priority queue", "Push/pop O(log n)", "Low", "Schedulers and top-k problems"],
+  ],
+  JavaScript: [
+    ["Array", "Indexed sequence / stack", "Index O(1); push O(1)*", "Medium", "Lists, stacks, and general collections"],
+    ["Object", "String-keyed records", "Lookup O(1)", "Medium", "JSON-like entities and configuration"],
+    ["Map", "Key-value lookup", "Lookup O(1)", "High", "Dynamic mappings with keys of any type"],
+    ["Set", "Unique membership", "Search O(1)", "High", "Deduplication and visited tracking"],
+    ["TypedArray", "Dense numeric data", "Index O(1)", "Low", "Binary data, graphics, and numeric buffers"],
+    ["WeakMap / WeakSet", "Object metadata", "Lookup O(1)", "High", "GC-friendly caches and private metadata"],
+  ],
+  Java: [
+    ["ArrayList", "Indexed sequence", "Index O(1); append O(1)*", "Medium", "General lists with frequent reads"],
+    ["LinkedList", "Deque operations", "Ends O(1); search O(n)", "High", "Queues and frequent end operations"],
+    ["ArrayDeque", "Stack or queue", "Ends O(1)*", "Low", "Preferred general stack and queue"],
+    ["HashMap / HashSet", "Lookup and membership", "Lookup O(1)", "High", "Indexes, caches, and uniqueness"],
+    ["TreeMap / TreeSet", "Sorted keys", "Lookup O(log n)", "High", "Ordered ranges and floor/ceiling queries"],
+    ["PriorityQueue", "Priority access", "Offer/poll O(log n)", "Medium", "Scheduling and shortest-path algorithms"],
+  ],
+  "C++": [
+    ["std::vector", "Indexed sequence", "Index O(1); push O(1)*", "Low", "Default dynamic sequence"],
+    ["std::array", "Fixed-size sequence", "Index O(1)", "Very low", "Known-size, cache-friendly storage"],
+    ["std::deque", "Double-ended sequence", "Ends O(1)", "Medium", "Queues and growth at both ends"],
+    ["std::list", "Stable node references", "Insert O(1); search O(n)", "High", "Splicing with known positions"],
+    ["std::unordered_map / set", "Fast lookup", "Lookup O(1)", "High", "Hash-based indexes and membership"],
+    ["std::map / set", "Sorted lookup", "Lookup O(log n)", "High", "Ordered keys and range queries"],
+    ["std::priority_queue", "Priority access", "Push/pop O(log n)", "Medium", "Schedulers and graph algorithms"],
+  ],
+  "C#": [
+    ["List<T>", "Indexed sequence", "Index O(1); add O(1)*", "Medium", "General-purpose dynamic lists"],
+    ["LinkedList<T>", "Node insertion/removal", "Known node O(1)", "High", "Frequent edits with retained nodes"],
+    ["Queue<T> / Stack<T>", "FIFO / LIFO access", "Ends O(1)*", "Low", "Work queues and undo histories"],
+    ["Dictionary<K,V> / HashSet<T>", "Lookup and membership", "Lookup O(1)", "High", "Indexes, caches, and uniqueness"],
+    ["SortedDictionary / SortedSet", "Sorted keys", "Lookup O(log n)", "High", "Ordered iteration and ranges"],
+    ["PriorityQueue<T,P>", "Priority access", "Enqueue/dequeue O(log n)", "Medium", "Scheduling and pathfinding"],
+  ],
+  Go: [
+    ["Array", "Fixed-size values", "Index O(1)", "Very low", "Known-size buffers and value semantics"],
+    ["Slice", "Indexed sequence", "Index O(1); append O(1)*", "Low", "Default dynamic sequence"],
+    ["map", "Key-value lookup", "Lookup O(1)", "High", "Indexes, counters, and sets via empty values"],
+    ["container/list", "Linked sequence", "Known node O(1)", "High", "Specialized node movement and LRU caches"],
+    ["container/heap", "Priority access", "Push/pop O(log n)", "Medium", "Schedulers and priority queues"],
+    ["chan", "Concurrent queueing", "Send/receive O(1)", "High", "Communication between goroutines"],
+  ],
+  Rust: [
+    ["Vec<T>", "Indexed sequence", "Index O(1); push O(1)*", "Low", "Default growable collection"],
+    ["VecDeque<T>", "Double-ended queue", "Ends O(1)*", "Low", "Queues, ring buffers, and BFS"],
+    ["LinkedList<T>", "Node-based deque", "Ends O(1)", "High", "Rare cases requiring stable node storage"],
+    ["HashMap / HashSet", "Lookup and membership", "Lookup O(1)", "High", "Indexes, caches, and uniqueness"],
+    ["BTreeMap / BTreeSet", "Sorted keys", "Lookup O(log n)", "Medium", "Ordered iteration and range queries"],
+    ["BinaryHeap<T>", "Priority access", "Push/pop O(log n)", "Low", "Schedulers and top-k problems"],
+  ],
+};
+
+export default languageStructureData;
