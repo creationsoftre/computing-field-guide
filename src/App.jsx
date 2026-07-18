@@ -6,6 +6,7 @@ import BigOGraph from "./components/BigOGraph";
 import GsapEffects from "./components/GsapEffects";
 import DataStructureComplexity from "./components/DataStructureComplexity";
 import SearchSortComplexity from "./components/SearchSortComplexity";
+import SortingByStructure from "./components/SortingByStructure";
 import "./App.css";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <BigOGraph />
       <DataStructureComplexity />
       <SearchSortComplexity />
+      <SortingByStructure />
     </main>
   );
 }
