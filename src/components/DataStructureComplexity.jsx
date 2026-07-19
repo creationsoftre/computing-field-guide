@@ -18,7 +18,7 @@ function DataStructureComplexity() {
   );
 
   return (
-    <AnimatedSection className="data-structures">
+    <AnimatedSection className="data-structures" id="structures">
       <div className="data-structures__content">
         <p className="section-label">Data Structure Tradeoffs</p>
         <h2>Time and space complexity by structure</h2>

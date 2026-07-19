@@ -87,21 +87,22 @@ function GsapEffects() {
         duration: 0.12,
         ease: "power3.out",
       });
-      const interactiveElements = document.querySelectorAll(
-        "[data-gsap-button], [data-gsap-card], input, a, button",
-      );
+      const interactiveSelector =
+        "[data-gsap-button], [data-gsap-card], input, a, button";
       let cursorInitialized = false;
+      let cursorVisible = false;
+      let cursorInteractive = false;
       let particleIndex = 0;
       let lastParticleTime = 0;
       let lastParticleX = 0;
       let lastParticleY = 0;
 
-      gsap.set(trailDots, { opacity: 0, scale: 0.25 });
+      gsap.set(trailDots, { opacity: 0, scale: 0.25, force3D: true });
 
       const emitParticle = (x, y, timestamp) => {
         const elapsed = timestamp - lastParticleTime;
 
-        if (elapsed < 24) {
+        if (elapsed < 38) {
           return;
         }
 
@@ -110,6 +111,7 @@ function GsapEffects() {
           y - lastParticleY,
         );
         const speed = elapsed > 0 ? distance / elapsed : 0;
+        if (distance < 5) return;
         const intensity = gsap.utils.clamp(0, 1, speed / 1.8);
         const particle = trailDots[particleIndex];
         particleIndex = (particleIndex + 1) % trailDots.length;
@@ -123,16 +125,15 @@ function GsapEffects() {
           y,
           opacity: 0.08 + intensity * 0.7,
           scale: 0.7 + intensity * 1.5,
-          filter: `blur(${7 - intensity * 3}px) brightness(${1 + intensity * 1.8})`,
         });
         gsap.to(particle, {
           x: `+=${(Math.random() - 0.5) * 24}`,
           y: `-=${10 + Math.random() * 24}`,
           opacity: 0,
           scale: 0.25 + intensity * 0.25,
-          filter: "blur(12px) brightness(1)",
-          duration: 5.2,
+          duration: 1.15,
           ease: "power1.out",
+          force3D: true,
         });
       };
 
@@ -148,13 +149,18 @@ function GsapEffects() {
           moveY(event.clientY);
         }
         emitParticle(event.clientX, event.clientY, event.timeStamp);
-        gsap.to(cursor, { opacity: 1, duration: 0.2 });
+        if (!cursorVisible) {
+          cursorVisible = true;
+          gsap.to(cursor, { opacity: 1, duration: 0.2, overwrite: "auto" });
+        }
       };
       const hideCursor = () => {
-        gsap.to(cursor, { opacity: 0, scale: 0, duration: 0.25 });
+        cursorVisible = false;
+        gsap.to(cursor, { opacity: 0, scale: 0, duration: 0.25, overwrite: "auto" });
       };
       const showCursor = () => {
-        gsap.to(cursor, { opacity: 1, scale: 1, duration: 0.25 });
+        cursorVisible = true;
+        gsap.to(cursor, { opacity: 1, scale: cursorInteractive ? 2.2 : 1, duration: 0.25, overwrite: "auto" });
       };
       const activateCursor = () => {
         gsap.to(cursor, {
@@ -175,19 +181,28 @@ function GsapEffects() {
         });
       };
 
-      interactiveElements.forEach((element) => {
-        element.addEventListener("pointerenter", activateCursor);
-        element.addEventListener("pointerleave", resetCursor);
-      });
+      const handleInteractiveEnter = (event) => {
+        const target = event.target.closest?.(interactiveSelector);
+        if (!target || target.contains(event.relatedTarget)) return;
+        cursorInteractive = true;
+        activateCursor();
+      };
+      const handleInteractiveLeave = (event) => {
+        const target = event.target.closest?.(interactiveSelector);
+        if (!target || target.contains(event.relatedTarget)) return;
+        cursorInteractive = false;
+        resetCursor();
+      };
+
       window.addEventListener("pointermove", moveCursor);
+      document.addEventListener("pointerover", handleInteractiveEnter);
+      document.addEventListener("pointerout", handleInteractiveLeave);
       document.documentElement.addEventListener("mouseleave", hideCursor);
       document.documentElement.addEventListener("mouseenter", showCursor);
       cleanups.push(() => {
-        interactiveElements.forEach((element) => {
-          element.removeEventListener("pointerenter", activateCursor);
-          element.removeEventListener("pointerleave", resetCursor);
-        });
         window.removeEventListener("pointermove", moveCursor);
+        document.removeEventListener("pointerover", handleInteractiveEnter);
+        document.removeEventListener("pointerout", handleInteractiveLeave);
         document.documentElement.removeEventListener("mouseleave", hideCursor);
         document.documentElement.removeEventListener("mouseenter", showCursor);
       });
@@ -204,7 +219,7 @@ function GsapEffects() {
   return (
     <>
       <div className="cursor-tail" ref={trailRef} aria-hidden="true">
-        {Array.from({ length: 240 }, (_, index) => (
+        {Array.from({ length: 36 }, (_, index) => (
           <span className="cursor-tail__dot" key={index} />
         ))}
       </div>

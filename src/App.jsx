@@ -9,12 +9,15 @@ import SearchSortComplexity from "./components/SearchSortComplexity";
 import SortingByStructure from "./components/SortingByStructure";
 import StructuresByLanguage from "./components/StructuresByLanguage";
 import DataStructureGuide from "./components/DataStructureGuide";
+import DatabaseRelationships from "./components/DatabaseRelationships";
+import Navigation from "./components/Navigation";
 import "./App.css";
 
 function App() {
   return (
     <main>
       <GsapEffects />
+      <Navigation />
       <Hero />
       <BigOIntro />
       <ComplexityComparison />
@@ -26,6 +29,7 @@ function App() {
       <SearchSortComplexity category="search" />
       <SearchSortComplexity category="sort" />
       <SortingByStructure />
+      <DatabaseRelationships />
     </main>
   );
 }

@@ -10,7 +10,7 @@ function SearchSortComplexity({ category }) {
   const isSearch = category === "search";
 
   return (
-    <AnimatedSection className="search-sort" id="search-sort">
+    <AnimatedSection className="search-sort" id={isSearch ? "search-algorithms" : "sort-algorithms"}>
       <div className="search-sort__content">
         <p className="section-label">{isSearch ? "Search algorithms" : "Sorting algorithms"}</p>
         <h2>{isSearch ? "Find the value you need." : "Put data in order."}</h2>

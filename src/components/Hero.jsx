@@ -23,7 +23,7 @@ const heroItem = {
 
 function Hero() {
   return (
-    <section className="hero">
+    <section className="hero" id="overview">
       <div className="hero__grid" aria-hidden="true" />
 
       <motion.div

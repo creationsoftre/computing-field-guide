@@ -8,7 +8,7 @@ function StructuresByLanguage() {
   const [language, setLanguage] = useState(languages[0]);
 
   return (
-    <AnimatedSection className="language-structures">
+    <AnimatedSection className="language-structures" id="languages">
       <div className="language-structures__content">
         <p className="section-label">From theory to code</p>
         <h2>Data structures by language</h2>
