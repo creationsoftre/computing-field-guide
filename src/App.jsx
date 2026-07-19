@@ -8,6 +8,7 @@ import DataStructureComplexity from "./components/DataStructureComplexity";
 import SearchSortComplexity from "./components/SearchSortComplexity";
 import SortingByStructure from "./components/SortingByStructure";
 import StructuresByLanguage from "./components/StructuresByLanguage";
+import ImplementationLab from "./components/ImplementationLab";
 import DataStructureGuide from "./components/DataStructureGuide";
 import DatabaseRelationships from "./components/DatabaseRelationships";
 import Navigation from "./components/Navigation";
@@ -26,6 +27,7 @@ function App() {
       <DataStructureComplexity />
       <DataStructureGuide />
       <StructuresByLanguage />
+      <ImplementationLab />
       <SearchSortComplexity category="search" />
       <SearchSortComplexity category="sort" />
       <SortingByStructure />

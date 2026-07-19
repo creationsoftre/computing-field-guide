@@ -6,9 +6,10 @@ const links = [
   { id: "big-o-intro", label: "Big O", icon: "02" },
   { id: "structures", label: "Structures", icon: "03" },
   { id: "languages", label: "Languages", icon: "04" },
-  { id: "search-algorithms", label: "Search", icon: "05" },
-  { id: "sort-algorithms", label: "Sorting", icon: "06" },
-  { id: "databases", label: "Databases", icon: "07" },
+  { id: "implementations", label: "Code Lab", icon: "05" },
+  { id: "search-algorithms", label: "Search", icon: "06" },
+  { id: "sort-algorithms", label: "Sorting", icon: "07" },
+  { id: "databases", label: "Databases", icon: "08" },
 ];
 
 const menuVariants = {
