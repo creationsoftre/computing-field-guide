@@ -3,46 +3,29 @@ import { AnimatePresence, motion } from "motion/react";
 import searchSortData from "../data/SearchSortData";
 import AnimatedSection from "./AnimatedSection";
 
-function SearchSortComplexity() {
-  const [category, setCategory] = useState("search");
-  const [selected, setSelected] = useState({ search: "linear-search", sort: "selection-sort" });
+function SearchSortComplexity({ category }) {
   const algorithms = searchSortData[category];
-  const algorithm = algorithms.find((item) => item.id === selected[category]);
-
-  const chooseCategory = (nextCategory) => setCategory(nextCategory);
-  const chooseAlgorithm = (id) => setSelected((current) => ({ ...current, [category]: id }));
+  const [selectedId, setSelectedId] = useState(algorithms[0].id);
+  const algorithm = algorithms.find((item) => item.id === selectedId);
+  const isSearch = category === "search";
 
   return (
     <AnimatedSection className="search-sort" id="search-sort">
       <div className="search-sort__content">
-        <p className="section-label">Search &amp; Sort</p>
-        <h2>Find it. Put it in order.</h2>
+        <p className="section-label">{isSearch ? "Search algorithms" : "Sorting algorithms"}</p>
+        <h2>{isSearch ? "Find the value you need." : "Put data in order."}</h2>
         <p className="search-sort__description">
-          Searching locates a value; sorting rearranges values into a defined order. Select an algorithm to see how its strategy changes its time and space costs.
+          {isSearch
+            ? "Searching locates a target within a collection. Compare a sequential scan with an approach that repeatedly eliminates half of a sorted range."
+            : "Sorting rearranges values into a defined order. Select an algorithm to see how its strategy changes its time, space, and stability tradeoffs."}
         </p>
-
-        <div className="algorithm-category" aria-label="Algorithm category">
-          {[
-            ["search", "Search algorithms"],
-            ["sort", "Sorting algorithms"],
-          ].map(([id, label]) => (
-            <button
-              className={category === id ? "algorithm-category__button algorithm-category__button--active" : "algorithm-category__button"}
-              key={id}
-              onClick={() => chooseCategory(id)}
-              type="button"
-            >
-              <span>{id === "search" ? "02" : "06"}</span>{label}
-            </button>
-          ))}
-        </div>
 
         <div className="algorithm-picker" aria-label={`Select a ${category} algorithm`}>
           {algorithms.map((item) => (
             <button
               className={item.id === algorithm.id ? "algorithm-picker__button algorithm-picker__button--active" : "algorithm-picker__button"}
               key={item.id}
-              onClick={() => chooseAlgorithm(item.id)}
+              onClick={() => setSelectedId(item.id)}
               type="button"
             >
               {item.name}

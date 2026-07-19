@@ -8,6 +8,7 @@ import DataStructureComplexity from "./components/DataStructureComplexity";
 import SearchSortComplexity from "./components/SearchSortComplexity";
 import SortingByStructure from "./components/SortingByStructure";
 import StructuresByLanguage from "./components/StructuresByLanguage";
+import DataStructureGuide from "./components/DataStructureGuide";
 import "./App.css";
 
 function App() {
@@ -20,9 +21,11 @@ function App() {
       <ComplexityList />
       <BigOGraph />
       <DataStructureComplexity />
-      <SearchSortComplexity />
-      <SortingByStructure />
+      <DataStructureGuide />
       <StructuresByLanguage />
+      <SearchSortComplexity category="search" />
+      <SearchSortComplexity category="sort" />
+      <SortingByStructure />
     </main>
   );
 }
