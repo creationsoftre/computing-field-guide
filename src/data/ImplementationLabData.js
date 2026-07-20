@@ -1,4 +1,315 @@
 const structures = {
+  Record: {
+    summary: "Groups named fields into one value and provides controlled field lookup and updates.",
+    complexity: ["Field access O(1)", "Update O(1)", "Space O(f)"],
+    steps: ["Define the fields", "Create a record", "Read or update by field name"],
+  },
+  Array: {
+    summary: "Stores values in contiguous indexed slots and grows its capacity when it becomes full.",
+    complexity: ["Index O(1)", "Search O(n)", "Append O(1) amortized", "Remove O(n)"],
+    steps: ["Allocate indexed storage", "Grow when full", "Shift values for insertion or removal"],
+  },
+  __linkedListCode: {
+    Python: `class Node:
+    def __init__(self, value, next_node=None): self.value, self.next = value, next_node
+
+class LinkedList:
+    def __init__(self): self.head = None
+    def add_first(self, value): self.head = Node(value, self.head)
+    def append(self, value):
+        node = Node(value)
+        if not self.head: self.head = node; return
+        current = self.head
+        while current.next: current = current.next
+        current.next = node
+    def contains(self, value):
+        current = self.head
+        while current:
+            if current.value == value: return True
+            current = current.next
+        return False
+    def remove(self, value):
+        previous, current = None, self.head
+        while current:
+            if current.value == value:
+                if previous: previous.next = current.next
+                else: self.head = current.next
+                return True
+            previous, current = current, current.next
+        return False`,
+    JavaScript: `class Node { constructor(value, next = null) { this.value = value; this.next = next; } }
+class LinkedList {
+  constructor() { this.head = null; }
+  addFirst(value) { this.head = new Node(value, this.head); }
+  append(value) {
+    const node = new Node(value);
+    if (!this.head) { this.head = node; return; }
+    let current = this.head;
+    while (current.next) current = current.next;
+    current.next = node;
+  }
+  find(value) {
+    for (let node = this.head; node; node = node.next) if (node.value === value) return node;
+    return null;
+  }
+  remove(value) {
+    let previous = null, current = this.head;
+    while (current) {
+      if (current.value === value) {
+        if (previous) previous.next = current.next; else this.head = current.next;
+        return true;
+      }
+      previous = current; current = current.next;
+    }
+    return false;
+  }
+}`,
+    Java: `class LinkedList<T> {
+  private static class Node<T> { T value; Node<T> next; Node(T v, Node<T> n) { value=v; next=n; } }
+  private Node<T> head;
+  void addFirst(T value) { head = new Node<>(value, head); }
+  void append(T value) {
+    var node = new Node<T>(value, null);
+    if (head == null) { head = node; return; }
+    var current = head; while (current.next != null) current = current.next; current.next = node;
+  }
+  boolean contains(T value) {
+    for (var node = head; node != null; node = node.next) if (Objects.equals(node.value, value)) return true;
+    return false;
+  }
+  boolean remove(T value) {
+    Node<T> previous = null, current = head;
+    while (current != null) {
+      if (Objects.equals(current.value, value)) {
+        if (previous == null) head = current.next; else previous.next = current.next; return true;
+      }
+      previous = current; current = current.next;
+    }
+    return false;
+  }
+}`,
+    "C++": `template <typename T> class LinkedList {
+  struct Node { T value; std::unique_ptr<Node> next; explicit Node(T v) : value(std::move(v)) {} };
+  std::unique_ptr<Node> head;
+public:
+  void addFirst(T value) { auto node = std::make_unique<Node>(std::move(value)); node->next = std::move(head); head = std::move(node); }
+  void append(T value) {
+    auto* link = &head; while (*link) link = &((*link)->next); *link = std::make_unique<Node>(std::move(value));
+  }
+  bool contains(const T& value) const {
+    for (auto* node = head.get(); node; node = node->next.get()) if (node->value == value) return true;
+    return false;
+  }
+  bool remove(const T& value) {
+    auto* link = &head;
+    while (*link) { if ((*link)->value == value) { *link = std::move((*link)->next); return true; } link = &((*link)->next); }
+    return false;
+  }
+};`,
+    "C#": `class LinkedList<T> {
+  class Node { public T Value; public Node? Next; public Node(T value, Node? next=null) => (Value, Next)=(value,next); }
+  private Node? head;
+  public void AddFirst(T value) => head = new Node(value, head);
+  public void Append(T value) {
+    var node = new Node(value); if (head is null) { head = node; return; }
+    var current = head; while (current.Next is not null) current = current.Next; current.Next = node;
+  }
+  public bool Contains(T value) {
+    for (var node = head; node is not null; node = node.Next)
+      if (EqualityComparer<T>.Default.Equals(node.Value, value)) return true;
+    return false;
+  }
+  public bool Remove(T value) {
+    Node? previous = null; var current = head;
+    while (current is not null) {
+      if (EqualityComparer<T>.Default.Equals(current.Value, value)) {
+        if (previous is null) head = current.Next; else previous.Next = current.Next; return true;
+      }
+      previous = current; current = current.Next;
+    }
+    return false;
+  }
+}`,
+    Go: `type listNode[T comparable] struct { value T; next *listNode[T] }
+type LinkedList[T comparable] struct { head *listNode[T] }
+func (l *LinkedList[T]) AddFirst(value T) { l.head = &listNode[T]{value: value, next: l.head} }
+func (l *LinkedList[T]) Append(value T) {
+	link := &l.head; for *link != nil { link = &(*link).next }; *link = &listNode[T]{value: value}
+}
+func (l *LinkedList[T]) Contains(value T) bool {
+	for node := l.head; node != nil; node = node.next { if node.value == value { return true } }; return false
+}
+func (l *LinkedList[T]) Remove(value T) bool {
+	link := &l.head
+	for *link != nil { if (*link).value == value { *link = (*link).next; return true }; link = &(*link).next }
+	return false
+}`,
+    Rust: `struct Node<T> { value: T, next: Option<Box<Node<T>>> }
+struct LinkedList<T> { head: Option<Box<Node<T>>> }
+impl<T: PartialEq> LinkedList<T> {
+    fn new() -> Self { Self { head: None } }
+    fn add_first(&mut self, value: T) { self.head = Some(Box::new(Node { value, next: self.head.take() })); }
+    fn append(&mut self, value: T) {
+        let mut link = &mut self.head;
+        while let Some(node) = link { link = &mut node.next; }
+        *link = Some(Box::new(Node { value, next: None }));
+    }
+    fn contains(&self, value: &T) -> bool {
+        let mut node = self.head.as_deref();
+        while let Some(current) = node { if &current.value == value { return true; } node = current.next.as_deref(); }
+        false
+    }
+    fn remove(&mut self, value: &T) -> bool {
+        let mut link = &mut self.head;
+        while link.as_ref().is_some() {
+            if link.as_ref().is_some_and(|node| &node.value == value) {
+                *link = link.as_mut().unwrap().next.take(); return true;
+            }
+            link = &mut link.as_mut().unwrap().next;
+        }
+        false
+    }
+}`,
+  },
+  __graphCode: {
+    Python: `class Graph:
+    def __init__(self): self.edges = {}
+    def add_vertex(self, vertex): self.edges.setdefault(vertex, set())
+    def add_edge(self, a, b):
+        self.add_vertex(a); self.add_vertex(b)
+        self.edges[a].add(b); self.edges[b].add(a)
+    def remove_edge(self, a, b):
+        self.edges.get(a, set()).discard(b); self.edges.get(b, set()).discard(a)
+    def remove_vertex(self, vertex):
+        for neighbor in self.edges.pop(vertex, set()): self.edges[neighbor].discard(vertex)
+    def has_path(self, start, target):
+        if start not in self.edges or target not in self.edges: return False
+        queue, visited = [start], {start}
+        for vertex in queue:
+            if vertex == target: return True
+            for neighbor in self.edges[vertex] - visited: visited.add(neighbor); queue.append(neighbor)
+        return False`,
+    JavaScript: `class Graph {
+  constructor() { this.edges = new Map(); }
+  addVertex(vertex) { if (!this.edges.has(vertex)) this.edges.set(vertex, new Set()); }
+  addEdge(a, b) { this.addVertex(a); this.addVertex(b); this.edges.get(a).add(b); this.edges.get(b).add(a); }
+  removeEdge(a, b) { this.edges.get(a)?.delete(b); this.edges.get(b)?.delete(a); }
+  removeVertex(vertex) {
+    for (const neighbor of this.edges.get(vertex) ?? []) this.edges.get(neighbor).delete(vertex);
+    return this.edges.delete(vertex);
+  }
+  hasPath(start, target) {
+    if (!this.edges.has(start) || !this.edges.has(target)) return false;
+    const queue = [start], visited = new Set([start]);
+    for (let i = 0; i < queue.length; i++) {
+      const vertex = queue[i]; if (vertex === target) return true;
+      for (const neighbor of this.edges.get(vertex)) if (!visited.has(neighbor)) { visited.add(neighbor); queue.push(neighbor); }
+    }
+    return false;
+  }
+}`,
+    Java: `class Graph<T> {
+  private final Map<T, Set<T>> edges = new HashMap<>();
+  void addVertex(T v) { edges.computeIfAbsent(v, ignored -> new HashSet<>()); }
+  void addEdge(T a, T b) { addVertex(a); addVertex(b); edges.get(a).add(b); edges.get(b).add(a); }
+  void removeEdge(T a, T b) { if (edges.containsKey(a)) edges.get(a).remove(b); if (edges.containsKey(b)) edges.get(b).remove(a); }
+  boolean removeVertex(T v) {
+    var neighbors = edges.remove(v); if (neighbors == null) return false;
+    neighbors.forEach(n -> edges.get(n).remove(v)); return true;
+  }
+  boolean hasPath(T start, T target) {
+    if (!edges.containsKey(start) || !edges.containsKey(target)) return false;
+    var queue = new ArrayDeque<T>(); var visited = new HashSet<T>(); queue.add(start); visited.add(start);
+    while (!queue.isEmpty()) { var v = queue.remove(); if (v.equals(target)) return true;
+      for (var n : edges.get(v)) if (visited.add(n)) queue.add(n); }
+    return false;
+  }
+}`,
+    "C++": `template <typename T> class Graph {
+  std::unordered_map<T, std::unordered_set<T>> edges;
+public:
+  void addVertex(const T& v) { edges.try_emplace(v); }
+  void addEdge(const T& a, const T& b) { addVertex(a); addVertex(b); edges[a].insert(b); edges[b].insert(a); }
+  void removeEdge(const T& a, const T& b) { edges[a].erase(b); edges[b].erase(a); }
+  bool removeVertex(const T& v) {
+    auto it = edges.find(v); if (it == edges.end()) return false;
+    for (const auto& n : it->second) edges[n].erase(v); edges.erase(it); return true;
+  }
+  bool hasPath(const T& start, const T& target) const {
+    if (!edges.contains(start) || !edges.contains(target)) return false;
+    std::queue<T> queue; std::unordered_set<T> visited{start}; queue.push(start);
+    while (!queue.empty()) { T v = queue.front(); queue.pop(); if (v == target) return true;
+      for (const auto& n : edges.at(v)) if (visited.insert(n).second) queue.push(n); }
+    return false;
+  }
+};`,
+    "C#": `class Graph<T> where T : notnull {
+  private readonly Dictionary<T, HashSet<T>> edges = new();
+  public void AddVertex(T v) { if (!edges.ContainsKey(v)) edges[v] = new(); }
+  public void AddEdge(T a, T b) { AddVertex(a); AddVertex(b); edges[a].Add(b); edges[b].Add(a); }
+  public void RemoveEdge(T a, T b) { if (edges.TryGetValue(a, out var x)) x.Remove(b); if (edges.TryGetValue(b, out var y)) y.Remove(a); }
+  public bool RemoveVertex(T v) {
+    if (!edges.Remove(v, out var neighbors)) return false;
+    foreach (var n in neighbors) edges[n].Remove(v); return true;
+  }
+  public bool HasPath(T start, T target) {
+    if (!edges.ContainsKey(start) || !edges.ContainsKey(target)) return false;
+    var queue = new Queue<T>(); var visited = new HashSet<T> { start }; queue.Enqueue(start);
+    while (queue.Count > 0) { var v = queue.Dequeue(); if (EqualityComparer<T>.Default.Equals(v, target)) return true;
+      foreach (var n in edges[v]) if (visited.Add(n)) queue.Enqueue(n); }
+    return false;
+  }
+}`,
+    Go: `type Graph[T comparable] struct { edges map[T]map[T]bool }
+func NewGraph[T comparable]() *Graph[T] { return &Graph[T]{edges: make(map[T]map[T]bool)} }
+func (g *Graph[T]) AddVertex(v T) { if g.edges[v] == nil { g.edges[v] = make(map[T]bool) } }
+func (g *Graph[T]) AddEdge(a, b T) { g.AddVertex(a); g.AddVertex(b); g.edges[a][b] = true; g.edges[b][a] = true }
+func (g *Graph[T]) RemoveEdge(a, b T) { delete(g.edges[a], b); delete(g.edges[b], a) }
+func (g *Graph[T]) RemoveVertex(v T) bool {
+	if g.edges[v] == nil { return false }; for n := range g.edges[v] { delete(g.edges[n], v) }; delete(g.edges, v); return true
+}
+func (g *Graph[T]) HasPath(start, target T) bool {
+	if g.edges[start] == nil || g.edges[target] == nil { return false }
+	queue, visited := []T{start}, map[T]bool{start: true}
+	for len(queue) > 0 { v := queue[0]; queue = queue[1:]; if v == target { return true }
+		for n := range g.edges[v] { if !visited[n] { visited[n] = true; queue = append(queue, n) } } }
+	return false
+}`,
+    Rust: `use std::collections::{HashMap, HashSet, VecDeque};
+struct Graph<T> { edges: HashMap<T, HashSet<T>> }
+impl<T: Eq + Hash + Clone> Graph<T> {
+    fn new() -> Self { Self { edges: HashMap::new() } }
+    fn add_vertex(&mut self, v: T) { self.edges.entry(v).or_default(); }
+    fn add_edge(&mut self, a: T, b: T) {
+        self.add_vertex(a.clone()); self.add_vertex(b.clone());
+        self.edges.get_mut(&a).unwrap().insert(b.clone()); self.edges.get_mut(&b).unwrap().insert(a);
+    }
+    fn remove_edge(&mut self, a: &T, b: &T) {
+        if let Some(n) = self.edges.get_mut(a) { n.remove(b); } if let Some(n) = self.edges.get_mut(b) { n.remove(a); }
+    }
+    fn remove_vertex(&mut self, v: &T) -> bool {
+        let Some(neighbors) = self.edges.remove(v) else { return false };
+        for n in neighbors { self.edges.get_mut(&n).unwrap().remove(v); } true
+    }
+    fn has_path(&self, start: &T, target: &T) -> bool {
+        if !self.edges.contains_key(start) || !self.edges.contains_key(target) { return false; }
+        let mut queue = VecDeque::from([start]); let mut visited = HashSet::from([start]);
+        while let Some(v) = queue.pop_front() { if v == target { return true; }
+            for n in &self.edges[v] { if visited.insert(n) { queue.push_back(n); } } }
+        false
+    }
+}`,
+  },
+  "Linked List": {
+    summary: "Connects nodes with references so values can be inserted and removed without moving every item.",
+    complexity: ["Search O(n)", "Add first O(1)", "Remove O(n)", "Space O(n)"],
+    steps: ["Wrap a value in a node", "Connect it to the chain", "Follow links to search or remove"],
+  },
+  Graph: {
+    summary: "Stores vertices and their connections in an adjacency list for efficient neighborhood traversal.",
+    complexity: ["Add vertex O(1)", "Add edge O(1) avg", "Search O(V + E)", "Space O(V + E)"],
+    steps: ["Add vertices", "Connect them with edges", "Traverse neighbors with breadth-first search"],
+  },
   "Hash Table": {
     summary: "Turns a key into a bucket index and uses separate chaining when keys collide.",
     complexity: ["Lookup O(1) avg", "Insert O(1) avg", "Space O(n)"],
@@ -27,6 +338,190 @@ const structures = {
 };
 
 const code = {
+  "Linked List": structures.__linkedListCode,
+  Graph: structures.__graphCode,
+  Record: {
+    Python: `class PersonRecord:
+    def __init__(self, name, age, email):
+        self.name, self.age, self.email = name, age, email
+
+    def get(self, field):
+        if field not in {"name", "age", "email"}: raise KeyError(field)
+        return getattr(self, field)
+
+    def update(self, field, value):
+        if field not in {"name", "age", "email"}: raise KeyError(field)
+        setattr(self, field, value)
+
+    def contains(self, value):
+        return value in (self.name, self.age, self.email)`,
+    JavaScript: `class PersonRecord {
+  constructor(name, age, email) {
+    this.name = name; this.age = age; this.email = email;
+  }
+  get(field) {
+    if (!PersonRecord.fields.has(field)) throw new Error("Unknown field");
+    return this[field];
+  }
+  update(field, value) {
+    if (!PersonRecord.fields.has(field)) throw new Error("Unknown field");
+    this[field] = value;
+  }
+  contains(value) { return [...PersonRecord.fields].some(f => this[f] === value); }
+}
+PersonRecord.fields = new Set(["name", "age", "email"]);`,
+    Java: `class PersonRecord {
+  private String name, email; private int age;
+  PersonRecord(String name, int age, String email) {
+    this.name = name; this.age = age; this.email = email;
+  }
+  Object get(String field) { return switch (field) {
+    case "name" -> name; case "age" -> age; case "email" -> email;
+    default -> throw new IllegalArgumentException("Unknown field");
+  }; }
+  void updateEmail(String value) { email = value; }
+  void updateName(String value) { name = value; }
+  void updateAge(int value) { age = value; }
+  boolean contains(Object value) {
+    return Objects.equals(name, value) || Objects.equals(age, value) || Objects.equals(email, value);
+  }
+}`,
+    "C++": `class PersonRecord {
+  std::string name, email; int age;
+public:
+  PersonRecord(std::string n, int a, std::string e)
+    : name(std::move(n)), email(std::move(e)), age(a) {}
+  const std::string& getName() const { return name; }
+  int getAge() const { return age; }
+  const std::string& getEmail() const { return email; }
+  void updateName(std::string value) { name = std::move(value); }
+  void updateAge(int value) { age = value; }
+  void updateEmail(std::string value) { email = std::move(value); }
+  bool contains(const std::string& value) const { return name == value || email == value; }
+};`,
+    "C#": `class PersonRecord {
+  public string Name { get; private set; }
+  public int Age { get; private set; }
+  public string Email { get; private set; }
+  public PersonRecord(string name, int age, string email) =>
+    (Name, Age, Email) = (name, age, email);
+  public object Get(string field) => field switch {
+    "name" => Name, "age" => Age, "email" => Email,
+    _ => throw new ArgumentException("Unknown field")
+  };
+  public void UpdateName(string value) => Name = value;
+  public void UpdateAge(int value) => Age = value;
+  public void UpdateEmail(string value) => Email = value;
+  public bool Contains(object value) => Equals(Name, value) || Equals(Age, value) || Equals(Email, value);
+}`,
+    Go: `type PersonRecord struct { Name string; Age int; Email string }
+func NewPersonRecord(name string, age int, email string) *PersonRecord {
+	return &PersonRecord{Name: name, Age: age, Email: email}
+}
+func (p *PersonRecord) Get(field string) (any, bool) {
+	switch field { case "name": return p.Name, true; case "age": return p.Age, true; case "email": return p.Email, true }
+	return nil, false
+}
+func (p *PersonRecord) UpdateEmail(value string) { p.Email = value }
+func (p *PersonRecord) Contains(value any) bool { return p.Name == value || p.Age == value || p.Email == value }`,
+    Rust: `struct PersonRecord { name: String, age: u32, email: String }
+impl PersonRecord {
+    fn new(name: String, age: u32, email: String) -> Self { Self { name, age, email } }
+    fn get(&self, field: &str) -> Option<String> {
+        match field { "name" => Some(self.name.clone()), "age" => Some(self.age.to_string()),
+            "email" => Some(self.email.clone()), _ => None }
+    }
+    fn update_email(&mut self, value: String) { self.email = value; }
+    fn contains(&self, value: &str) -> bool {
+        self.name == value || self.email == value || self.age.to_string() == value
+    }
+}`,
+  },
+  Array: {
+    Python: `class DynamicArray:
+    def __init__(self): self.items = []
+    def append(self, value): self.items.append(value)
+    def insert(self, index, value): self.items.insert(index, value)
+    def get(self, index): return self.items[index]
+    def index_of(self, value):
+        try: return self.items.index(value)
+        except ValueError: return -1
+    def remove(self, value):
+        try: self.items.remove(value); return True
+        except ValueError: return False
+    def __len__(self): return len(self.items)`,
+    JavaScript: `class DynamicArray {
+  constructor() { this.items = []; }
+  append(value) { this.items.push(value); }
+  insert(index, value) { this.items.splice(index, 0, value); }
+  get(index) { return this.items[index]; }
+  indexOf(value) { return this.items.indexOf(value); }
+  remove(value) {
+    const index = this.indexOf(value);
+    if (index < 0) return false;
+    this.items.splice(index, 1); return true;
+  }
+  get size() { return this.items.length; }
+}`,
+    Java: `class DynamicArray<T> {
+  private final ArrayList<T> items = new ArrayList<>();
+  void append(T value) { items.add(value); }
+  void insert(int index, T value) { items.add(index, value); }
+  T get(int index) { return items.get(index); }
+  int indexOf(T value) { return items.indexOf(value); }
+  boolean remove(T value) { return items.remove(value); }
+  int size() { return items.size(); }
+}`,
+    "C++": `template <typename T> class DynamicArray {
+  std::vector<T> items;
+public:
+  void append(T value) { items.push_back(std::move(value)); }
+  void insert(size_t index, T value) { items.insert(items.begin() + index, std::move(value)); }
+  const T& get(size_t index) const { return items.at(index); }
+  int indexOf(const T& value) const {
+    auto it = std::find(items.begin(), items.end(), value);
+    return it == items.end() ? -1 : static_cast<int>(it - items.begin());
+  }
+  bool remove(const T& value) {
+    auto it = std::find(items.begin(), items.end(), value);
+    if (it == items.end()) return false; items.erase(it); return true;
+  }
+  size_t size() const { return items.size(); }
+};`,
+    "C#": `class DynamicArray<T> {
+  private readonly List<T> items = new();
+  public void Append(T value) => items.Add(value);
+  public void Insert(int index, T value) => items.Insert(index, value);
+  public T Get(int index) => items[index];
+  public int IndexOf(T value) => items.IndexOf(value);
+  public bool Remove(T value) => items.Remove(value);
+  public int Size => items.Count;
+}`,
+    Go: `type DynamicArray[T comparable] struct { items []T }
+func (a *DynamicArray[T]) Append(value T) { a.items = append(a.items, value) }
+func (a *DynamicArray[T]) Insert(index int, value T) {
+	a.items = append(a.items, value); copy(a.items[index+1:], a.items[index:]); a.items[index] = value
+}
+func (a *DynamicArray[T]) Get(index int) T { return a.items[index] }
+func (a *DynamicArray[T]) IndexOf(value T) int {
+	for i, item := range a.items { if item == value { return i } }; return -1
+}
+func (a *DynamicArray[T]) Remove(value T) bool {
+	i := a.IndexOf(value); if i < 0 { return false }; a.items = append(a.items[:i], a.items[i+1:]...); return true
+}`,
+    Rust: `struct DynamicArray<T> { items: Vec<T> }
+impl<T: PartialEq> DynamicArray<T> {
+    fn new() -> Self { Self { items: Vec::new() } }
+    fn append(&mut self, value: T) { self.items.push(value); }
+    fn insert(&mut self, index: usize, value: T) { self.items.insert(index, value); }
+    fn get(&self, index: usize) -> Option<&T> { self.items.get(index) }
+    fn index_of(&self, value: &T) -> Option<usize> { self.items.iter().position(|x| x == value) }
+    fn remove(&mut self, value: &T) -> bool {
+        if let Some(i) = self.index_of(value) { self.items.remove(i); true } else { false }
+    }
+    fn len(&self) -> usize { self.items.len() }
+}`,
+  },
   "Hash Table": {
     Python: `class HashTable:
     def __init__(self, size=8):
@@ -499,5 +994,5 @@ impl<T: Ord> Node<T> {
 };
 
 export const implementationLanguages = ["Python", "JavaScript", "Java", "C++", "C#", "Go", "Rust"];
-export const implementationStructures = Object.keys(structures);
+export const implementationStructures = Object.keys(structures).filter((key) => !key.startsWith("__"));
 export const getImplementation = (structure, language) => ({ ...structures[structure], code: code[structure][language] });
