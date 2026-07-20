@@ -624,6 +624,14 @@ section[id] { scroll-margin-top: 1rem; }
   border-color: var(--color-orange);
 }
 
+.operation-visual__overflow {
+  align-self: center;
+  padding: 0.2rem 0.45rem;
+  color: #b8b8b8;
+  font-family: monospace;
+  font-size: 0.8rem;
+}
+
 .complexity-card__example {
   margin-bottom: 0;
 }

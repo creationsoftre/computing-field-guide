@@ -11,12 +11,15 @@ const structures = {
   },
   __linkedListCode: {
     Python: `class Node:
+    # Each node stores a value and a link to the next node.
     def __init__(self, value, next_node=None): self.value, self.next = value, next_node
 
 class LinkedList:
     def __init__(self): self.head = None
     def add_first(self, value): self.head = Node(value, self.head)
+
     def append(self, value):
+        # Follow links until the end, then attach the new node.
         node = Node(value)
         if not self.head: self.head = node; return
         current = self.head
@@ -29,6 +32,7 @@ class LinkedList:
             current = current.next
         return False
     def remove(self, value):
+        # Keep the previous node so its link can skip the removed node.
         previous, current = None, self.head
         while current:
             if current.value == value:
@@ -37,11 +41,14 @@ class LinkedList:
                 return True
             previous, current = current, current.next
         return False`,
-    JavaScript: `class Node { constructor(value, next = null) { this.value = value; this.next = next; } }
+    JavaScript: `// Each node stores a value and a link to the next node.
+class Node { constructor(value, next = null) { this.value = value; this.next = next; } }
+
 class LinkedList {
   constructor() { this.head = null; }
   addFirst(value) { this.head = new Node(value, this.head); }
   append(value) {
+    // Follow links until the end, then attach the new node.
     const node = new Node(value);
     if (!this.head) { this.head = node; return; }
     let current = this.head;
@@ -53,6 +60,7 @@ class LinkedList {
     return null;
   }
   remove(value) {
+    // Reconnect the surrounding nodes to remove the match.
     let previous = null, current = this.head;
     while (current) {
       if (current.value === value) {
@@ -65,10 +73,13 @@ class LinkedList {
   }
 }`,
     Java: `class LinkedList<T> {
+  // Nodes form the chain; head points to its first node.
   private static class Node<T> { T value; Node<T> next; Node(T v, Node<T> n) { value=v; next=n; } }
   private Node<T> head;
+
   void addFirst(T value) { head = new Node<>(value, head); }
   void append(T value) {
+    // Follow links until the end, then attach the new node.
     var node = new Node<T>(value, null);
     if (head == null) { head = node; return; }
     var current = head; while (current.next != null) current = current.next; current.next = node;
@@ -78,6 +89,7 @@ class LinkedList {
     return false;
   }
   boolean remove(T value) {
+    // Keep the previous node so its link can bypass the match.
     Node<T> previous = null, current = head;
     while (current != null) {
       if (Objects.equals(current.value, value)) {
@@ -89,11 +101,13 @@ class LinkedList {
   }
 }`,
     "C++": `template <typename T> class LinkedList {
+  // unique_ptr gives each node ownership of the rest of the chain.
   struct Node { T value; std::unique_ptr<Node> next; explicit Node(T v) : value(std::move(v)) {} };
   std::unique_ptr<Node> head;
 public:
   void addFirst(T value) { auto node = std::make_unique<Node>(std::move(value)); node->next = std::move(head); head = std::move(node); }
   void append(T value) {
+    // A pointer to the link makes updating the tail straightforward.
     auto* link = &head; while (*link) link = &((*link)->next); *link = std::make_unique<Node>(std::move(value));
   }
   bool contains(const T& value) const {
@@ -101,16 +115,19 @@ public:
     return false;
   }
   bool remove(const T& value) {
+    // Replace the matching link with the removed node's next link.
     auto* link = &head;
     while (*link) { if ((*link)->value == value) { *link = std::move((*link)->next); return true; } link = &((*link)->next); }
     return false;
   }
 };`,
     "C#": `class LinkedList<T> {
+  // Each node stores a value and a reference to the next node.
   class Node { public T Value; public Node? Next; public Node(T value, Node? next=null) => (Value, Next)=(value,next); }
   private Node? head;
   public void AddFirst(T value) => head = new Node(value, head);
   public void Append(T value) {
+    // Follow Next references until the end of the chain.
     var node = new Node(value); if (head is null) { head = node; return; }
     var current = head; while (current.Next is not null) current = current.Next; current.Next = node;
   }
@@ -120,6 +137,7 @@ public:
     return false;
   }
   public bool Remove(T value) {
+    // Reconnect the surrounding nodes to remove the match.
     Node? previous = null; var current = head;
     while (current is not null) {
       if (EqualityComparer<T>.Default.Equals(current.Value, value)) {
@@ -130,26 +148,33 @@ public:
     return false;
   }
 }`,
-    Go: `type listNode[T comparable] struct { value T; next *listNode[T] }
+    Go: `// Each node stores a value and a pointer to the next node.
+type listNode[T comparable] struct { value T; next *listNode[T] }
 type LinkedList[T comparable] struct { head *listNode[T] }
+
 func (l *LinkedList[T]) AddFirst(value T) { l.head = &listNode[T]{value: value, next: l.head} }
 func (l *LinkedList[T]) Append(value T) {
+	// Walk the links, then replace the empty tail link.
 	link := &l.head; for *link != nil { link = &(*link).next }; *link = &listNode[T]{value: value}
 }
 func (l *LinkedList[T]) Contains(value T) bool {
 	for node := l.head; node != nil; node = node.next { if node.value == value { return true } }; return false
 }
 func (l *LinkedList[T]) Remove(value T) bool {
+	// A pointer to the link lets us reconnect the chain in place.
 	link := &l.head
 	for *link != nil { if (*link).value == value { *link = (*link).next; return true }; link = &(*link).next }
 	return false
 }`,
-    Rust: `struct Node<T> { value: T, next: Option<Box<Node<T>>> }
+    Rust: `// Box gives each node ownership of the next node in the chain.
+struct Node<T> { value: T, next: Option<Box<Node<T>>> }
 struct LinkedList<T> { head: Option<Box<Node<T>>> }
+
 impl<T: PartialEq> LinkedList<T> {
     fn new() -> Self { Self { head: None } }
     fn add_first(&mut self, value: T) { self.head = Some(Box::new(Node { value, next: self.head.take() })); }
     fn append(&mut self, value: T) {
+        // Follow mutable links until the empty tail is reached.
         let mut link = &mut self.head;
         while let Some(node) = link { link = &mut node.next; }
         *link = Some(Box::new(Node { value, next: None }));
@@ -160,6 +185,7 @@ impl<T: PartialEq> LinkedList<T> {
         false
     }
     fn remove(&mut self, value: &T) -> bool {
+        // Replace the matching link with the next link to remove its node.
         let mut link = &mut self.head;
         while link.as_ref().is_some() {
             if link.as_ref().is_some_and(|node| &node.value == value) {
@@ -173,9 +199,11 @@ impl<T: PartialEq> LinkedList<T> {
   },
   __graphCode: {
     Python: `class Graph:
+    # Map each vertex to the set of vertices connected to it.
     def __init__(self): self.edges = {}
     def add_vertex(self, vertex): self.edges.setdefault(vertex, set())
     def add_edge(self, a, b):
+        # Add both directions to create an undirected edge.
         self.add_vertex(a); self.add_vertex(b)
         self.edges[a].add(b); self.edges[b].add(a)
     def remove_edge(self, a, b):
@@ -183,6 +211,7 @@ impl<T: PartialEq> LinkedList<T> {
     def remove_vertex(self, vertex):
         for neighbor in self.edges.pop(vertex, set()): self.edges[neighbor].discard(vertex)
     def has_path(self, start, target):
+        # Breadth-first search visits each reachable vertex once.
         if start not in self.edges or target not in self.edges: return False
         queue, visited = [start], {start}
         for vertex in queue:
@@ -190,8 +219,13 @@ impl<T: PartialEq> LinkedList<T> {
             for neighbor in self.edges[vertex] - visited: visited.add(neighbor); queue.append(neighbor)
         return False`,
     JavaScript: `class Graph {
-  constructor() { this.edges = new Map(); }
+  constructor() {
+    // Map each vertex to the set of vertices connected to it.
+    this.edges = new Map();
+  }
+
   addVertex(vertex) { if (!this.edges.has(vertex)) this.edges.set(vertex, new Set()); }
+  // Add both directions to create an undirected edge.
   addEdge(a, b) { this.addVertex(a); this.addVertex(b); this.edges.get(a).add(b); this.edges.get(b).add(a); }
   removeEdge(a, b) { this.edges.get(a)?.delete(b); this.edges.get(b)?.delete(a); }
   removeVertex(vertex) {
@@ -199,6 +233,7 @@ impl<T: PartialEq> LinkedList<T> {
     return this.edges.delete(vertex);
   }
   hasPath(start, target) {
+    // Breadth-first search visits each reachable vertex once.
     if (!this.edges.has(start) || !this.edges.has(target)) return false;
     const queue = [start], visited = new Set([start]);
     for (let i = 0; i < queue.length; i++) {
@@ -209,8 +244,11 @@ impl<T: PartialEq> LinkedList<T> {
   }
 }`,
     Java: `class Graph<T> {
+  // The adjacency list maps every vertex to its neighbors.
   private final Map<T, Set<T>> edges = new HashMap<>();
+
   void addVertex(T v) { edges.computeIfAbsent(v, ignored -> new HashSet<>()); }
+  // Store both directions because this graph is undirected.
   void addEdge(T a, T b) { addVertex(a); addVertex(b); edges.get(a).add(b); edges.get(b).add(a); }
   void removeEdge(T a, T b) { if (edges.containsKey(a)) edges.get(a).remove(b); if (edges.containsKey(b)) edges.get(b).remove(a); }
   boolean removeVertex(T v) {
@@ -218,6 +256,7 @@ impl<T: PartialEq> LinkedList<T> {
     neighbors.forEach(n -> edges.get(n).remove(v)); return true;
   }
   boolean hasPath(T start, T target) {
+    // Breadth-first search uses a queue and avoids revisiting vertices.
     if (!edges.containsKey(start) || !edges.containsKey(target)) return false;
     var queue = new ArrayDeque<T>(); var visited = new HashSet<T>(); queue.add(start); visited.add(start);
     while (!queue.isEmpty()) { var v = queue.remove(); if (v.equals(target)) return true;
@@ -226,9 +265,11 @@ impl<T: PartialEq> LinkedList<T> {
   }
 }`,
     "C++": `template <typename T> class Graph {
+  // The adjacency list maps every vertex to its neighbors.
   std::unordered_map<T, std::unordered_set<T>> edges;
 public:
   void addVertex(const T& v) { edges.try_emplace(v); }
+  // Store both directions because this graph is undirected.
   void addEdge(const T& a, const T& b) { addVertex(a); addVertex(b); edges[a].insert(b); edges[b].insert(a); }
   void removeEdge(const T& a, const T& b) { edges[a].erase(b); edges[b].erase(a); }
   bool removeVertex(const T& v) {
@@ -236,6 +277,7 @@ public:
     for (const auto& n : it->second) edges[n].erase(v); edges.erase(it); return true;
   }
   bool hasPath(const T& start, const T& target) const {
+    // Breadth-first search explores the graph one level at a time.
     if (!edges.contains(start) || !edges.contains(target)) return false;
     std::queue<T> queue; std::unordered_set<T> visited{start}; queue.push(start);
     while (!queue.empty()) { T v = queue.front(); queue.pop(); if (v == target) return true;
@@ -244,8 +286,11 @@ public:
   }
 };`,
     "C#": `class Graph<T> where T : notnull {
+  // The adjacency list maps every vertex to its neighbors.
   private readonly Dictionary<T, HashSet<T>> edges = new();
+
   public void AddVertex(T v) { if (!edges.ContainsKey(v)) edges[v] = new(); }
+  // Store both directions because this graph is undirected.
   public void AddEdge(T a, T b) { AddVertex(a); AddVertex(b); edges[a].Add(b); edges[b].Add(a); }
   public void RemoveEdge(T a, T b) { if (edges.TryGetValue(a, out var x)) x.Remove(b); if (edges.TryGetValue(b, out var y)) y.Remove(a); }
   public bool RemoveVertex(T v) {
@@ -253,6 +298,7 @@ public:
     foreach (var n in neighbors) edges[n].Remove(v); return true;
   }
   public bool HasPath(T start, T target) {
+    // Breadth-first search uses a queue and avoids revisiting vertices.
     if (!edges.ContainsKey(start) || !edges.ContainsKey(target)) return false;
     var queue = new Queue<T>(); var visited = new HashSet<T> { start }; queue.Enqueue(start);
     while (queue.Count > 0) { var v = queue.Dequeue(); if (EqualityComparer<T>.Default.Equals(v, target)) return true;
@@ -260,15 +306,19 @@ public:
     return false;
   }
 }`,
-    Go: `type Graph[T comparable] struct { edges map[T]map[T]bool }
+    Go: `// The adjacency list maps every vertex to its neighbors.
+type Graph[T comparable] struct { edges map[T]map[T]bool }
+
 func NewGraph[T comparable]() *Graph[T] { return &Graph[T]{edges: make(map[T]map[T]bool)} }
 func (g *Graph[T]) AddVertex(v T) { if g.edges[v] == nil { g.edges[v] = make(map[T]bool) } }
+// Add both directions because this graph is undirected.
 func (g *Graph[T]) AddEdge(a, b T) { g.AddVertex(a); g.AddVertex(b); g.edges[a][b] = true; g.edges[b][a] = true }
 func (g *Graph[T]) RemoveEdge(a, b T) { delete(g.edges[a], b); delete(g.edges[b], a) }
 func (g *Graph[T]) RemoveVertex(v T) bool {
 	if g.edges[v] == nil { return false }; for n := range g.edges[v] { delete(g.edges[n], v) }; delete(g.edges, v); return true
 }
 func (g *Graph[T]) HasPath(start, target T) bool {
+	// Breadth-first search visits each reachable vertex once.
 	if g.edges[start] == nil || g.edges[target] == nil { return false }
 	queue, visited := []T{start}, map[T]bool{start: true}
 	for len(queue) > 0 { v := queue[0]; queue = queue[1:]; if v == target { return true }
@@ -276,11 +326,14 @@ func (g *Graph[T]) HasPath(start, target T) bool {
 	return false
 }`,
     Rust: `use std::collections::{HashMap, HashSet, VecDeque};
+
+// The adjacency list maps every vertex to its neighbors.
 struct Graph<T> { edges: HashMap<T, HashSet<T>> }
 impl<T: Eq + Hash + Clone> Graph<T> {
     fn new() -> Self { Self { edges: HashMap::new() } }
     fn add_vertex(&mut self, v: T) { self.edges.entry(v).or_default(); }
     fn add_edge(&mut self, a: T, b: T) {
+        // Store both directions because this graph is undirected.
         self.add_vertex(a.clone()); self.add_vertex(b.clone());
         self.edges.get_mut(&a).unwrap().insert(b.clone()); self.edges.get_mut(&b).unwrap().insert(a);
     }
@@ -292,6 +345,7 @@ impl<T: Eq + Hash + Clone> Graph<T> {
         for n in neighbors { self.edges.get_mut(&n).unwrap().remove(v); } true
     }
     fn has_path(&self, start: &T, target: &T) -> bool {
+        // Breadth-first search visits each reachable vertex once.
         if !self.edges.contains_key(start) || !self.edges.contains_key(target) { return false; }
         let mut queue = VecDeque::from([start]); let mut visited = HashSet::from([start]);
         while let Some(v) = queue.pop_front() { if v == target { return true; }
@@ -343,9 +397,11 @@ const code = {
   Record: {
     Python: `class PersonRecord:
     def __init__(self, name, age, email):
+        # A record groups related values under named fields.
         self.name, self.age, self.email = name, age, email
 
     def get(self, field):
+        # Restrict access to fields defined by this record.
         if field not in {"name", "age", "email"}: raise KeyError(field)
         return getattr(self, field)
 
@@ -357,9 +413,12 @@ const code = {
         return value in (self.name, self.age, self.email)`,
     JavaScript: `class PersonRecord {
   constructor(name, age, email) {
+    // A record groups related values under named fields.
     this.name = name; this.age = age; this.email = email;
   }
+
   get(field) {
+    // Reject fields that are not part of the record's schema.
     if (!PersonRecord.fields.has(field)) throw new Error("Unknown field");
     return this[field];
   }
@@ -372,10 +431,13 @@ const code = {
 PersonRecord.fields = new Set(["name", "age", "email"]);`,
     Java: `class PersonRecord {
   private String name, email; private int age;
+
   PersonRecord(String name, int age, String email) {
+    // Store related values as one strongly typed object.
     this.name = name; this.age = age; this.email = email;
   }
   Object get(String field) { return switch (field) {
+    // Match a requested field name to its stored value.
     case "name" -> name; case "age" -> age; case "email" -> email;
     default -> throw new IllegalArgumentException("Unknown field");
   }; }
@@ -387,6 +449,7 @@ PersonRecord.fields = new Set(["name", "age", "email"]);`,
   }
 }`,
     "C++": `class PersonRecord {
+  // Private fields keep the record's data controlled by its methods.
   std::string name, email; int age;
 public:
   PersonRecord(std::string n, int a, std::string e)
@@ -394,17 +457,22 @@ public:
   const std::string& getName() const { return name; }
   int getAge() const { return age; }
   const std::string& getEmail() const { return email; }
+
+  // Update individual fields without replacing the whole record.
   void updateName(std::string value) { name = std::move(value); }
   void updateAge(int value) { age = value; }
   void updateEmail(std::string value) { email = std::move(value); }
   bool contains(const std::string& value) const { return name == value || email == value; }
 };`,
     "C#": `class PersonRecord {
+  // Private setters prevent callers from changing fields directly.
   public string Name { get; private set; }
   public int Age { get; private set; }
   public string Email { get; private set; }
   public PersonRecord(string name, int age, string email) =>
     (Name, Age, Email) = (name, age, email);
+
+  // Return a field by its schema name.
   public object Get(string field) => field switch {
     "name" => Name, "age" => Age, "email" => Email,
     _ => throw new ArgumentException("Unknown field")
@@ -414,20 +482,27 @@ public:
   public void UpdateEmail(string value) => Email = value;
   public bool Contains(object value) => Equals(Name, value) || Equals(Age, value) || Equals(Email, value);
 }`,
-    Go: `type PersonRecord struct { Name string; Age int; Email string }
+    Go: `// PersonRecord groups related, named fields into one value.
+type PersonRecord struct { Name string; Age int; Email string }
+
 func NewPersonRecord(name string, age int, email string) *PersonRecord {
 	return &PersonRecord{Name: name, Age: age, Email: email}
 }
+
+// Get safely looks up a field by its schema name.
 func (p *PersonRecord) Get(field string) (any, bool) {
 	switch field { case "name": return p.Name, true; case "age": return p.Age, true; case "email": return p.Email, true }
 	return nil, false
 }
 func (p *PersonRecord) UpdateEmail(value string) { p.Email = value }
 func (p *PersonRecord) Contains(value any) bool { return p.Name == value || p.Age == value || p.Email == value }`,
-    Rust: `struct PersonRecord { name: String, age: u32, email: String }
+    Rust: `// Private fields are accessed through the record's methods.
+struct PersonRecord { name: String, age: u32, email: String }
+
 impl PersonRecord {
     fn new(name: String, age: u32, email: String) -> Self { Self { name, age, email } }
     fn get(&self, field: &str) -> Option<String> {
+        // None signals that the requested field is not in the schema.
         match field { "name" => Some(self.name.clone()), "age" => Some(self.age.to_string()),
             "email" => Some(self.email.clone()), _ => None }
     }
@@ -439,11 +514,18 @@ impl PersonRecord {
   },
   Array: {
     Python: `class DynamicArray:
-    def __init__(self): self.items = []
-    def append(self, value): self.items.append(value)
+    def __init__(self):
+        # Python's list provides resizable, indexed storage.
+        self.items = []
+
+    def append(self, value):
+        self.items.append(value)
+
     def insert(self, index, value): self.items.insert(index, value)
     def get(self, index): return self.items[index]
+
     def index_of(self, value):
+        # A value search scans from the beginning of the array.
         try: return self.items.index(value)
         except ValueError: return -1
     def remove(self, value):
@@ -451,10 +533,16 @@ impl PersonRecord {
         except ValueError: return False
     def __len__(self): return len(self.items)`,
     JavaScript: `class DynamicArray {
-  constructor() { this.items = []; }
+  constructor() {
+    // JavaScript arrays provide resizable, indexed storage.
+    this.items = [];
+  }
+
   append(value) { this.items.push(value); }
   insert(index, value) { this.items.splice(index, 0, value); }
   get(index) { return this.items[index]; }
+
+  // Search returns -1 when the value is not present.
   indexOf(value) { return this.items.indexOf(value); }
   remove(value) {
     const index = this.indexOf(value);
@@ -464,20 +552,27 @@ impl PersonRecord {
   get size() { return this.items.length; }
 }`,
     Java: `class DynamicArray<T> {
+  // ArrayList grows its backing array as values are appended.
   private final ArrayList<T> items = new ArrayList<>();
+
   void append(T value) { items.add(value); }
   void insert(int index, T value) { items.add(index, value); }
   T get(int index) { return items.get(index); }
+
+  // Search and removal compare values using equals.
   int indexOf(T value) { return items.indexOf(value); }
   boolean remove(T value) { return items.remove(value); }
   int size() { return items.size(); }
 }`,
     "C++": `template <typename T> class DynamicArray {
+  // vector stores values contiguously and expands its capacity as needed.
   std::vector<T> items;
 public:
   void append(T value) { items.push_back(std::move(value)); }
   void insert(size_t index, T value) { items.insert(items.begin() + index, std::move(value)); }
   const T& get(size_t index) const { return items.at(index); }
+
+  // A linear search returns -1 when no matching value exists.
   int indexOf(const T& value) const {
     auto it = std::find(items.begin(), items.end(), value);
     return it == items.end() ? -1 : static_cast<int>(it - items.begin());
@@ -489,32 +584,45 @@ public:
   size_t size() const { return items.size(); }
 };`,
     "C#": `class DynamicArray<T> {
+  // List<T> supplies resizable, indexed storage.
   private readonly List<T> items = new();
+
   public void Append(T value) => items.Add(value);
   public void Insert(int index, T value) => items.Insert(index, value);
   public T Get(int index) => items[index];
+
+  // IndexOf searches; Remove deletes the first matching value.
   public int IndexOf(T value) => items.IndexOf(value);
   public bool Remove(T value) => items.Remove(value);
   public int Size => items.Count;
 }`,
-    Go: `type DynamicArray[T comparable] struct { items []T }
+    Go: `// A slice supplies resizable, indexed storage.
+type DynamicArray[T comparable] struct { items []T }
+
 func (a *DynamicArray[T]) Append(value T) { a.items = append(a.items, value) }
 func (a *DynamicArray[T]) Insert(index int, value T) {
+	// Grow first, shift later values right, then fill the gap.
 	a.items = append(a.items, value); copy(a.items[index+1:], a.items[index:]); a.items[index] = value
 }
+
 func (a *DynamicArray[T]) Get(index int) T { return a.items[index] }
 func (a *DynamicArray[T]) IndexOf(value T) int {
+	// Search from left to right for the first match.
 	for i, item := range a.items { if item == value { return i } }; return -1
 }
 func (a *DynamicArray[T]) Remove(value T) bool {
 	i := a.IndexOf(value); if i < 0 { return false }; a.items = append(a.items[:i], a.items[i+1:]...); return true
 }`,
-    Rust: `struct DynamicArray<T> { items: Vec<T> }
+    Rust: `// Vec supplies contiguous storage that grows as needed.
+struct DynamicArray<T> { items: Vec<T> }
+
 impl<T: PartialEq> DynamicArray<T> {
     fn new() -> Self { Self { items: Vec::new() } }
     fn append(&mut self, value: T) { self.items.push(value); }
     fn insert(&mut self, index: usize, value: T) { self.items.insert(index, value); }
     fn get(&self, index: usize) -> Option<&T> { self.items.get(index) }
+
+    // position performs a left-to-right value search.
     fn index_of(&self, value: &T) -> Option<usize> { self.items.iter().position(|x| x == value) }
     fn remove(&mut self, value: &T) -> bool {
         if let Some(i) = self.index_of(value) { self.items.remove(i); true } else { false }
