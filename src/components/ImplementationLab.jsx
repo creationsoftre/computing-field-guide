@@ -47,10 +47,11 @@ function ImplementationLab() {
     <AnimatedSection className="implementation-lab" id="implementations">
       <div className="implementation-lab__content">
         <p className="section-label">Implementation lab</p>
-        <h2>One idea. Seven languages.</h2>
+        <h2>Ready-to-use structures. Seven languages.</h2>
         <p className="implementation-lab__description">
-          Choose a structure, then switch languages to see how the same idea is
-          expressed. These compact implementations favor clarity over production features.
+          Choose a structure to learn how its class works, then switch languages.
+          Each example includes the structure&apos;s core insert, search, access, and
+          removal operations so you can study it or copy it into a project.
         </p>
 
         <div className="implementation-controls">
@@ -136,7 +137,7 @@ function ImplementationLab() {
                 {implementation.complexity.map((item) => <code key={item}>{item}</code>)}
               </div>
               <small>
-                Educational implementation: validation, resizing, and some edge cases are intentionally omitted.
+                Reference implementation: adapt error handling, imports, and validation to your project.
               </small>
             </aside>
           </motion.div>
