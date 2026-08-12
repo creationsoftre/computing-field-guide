@@ -212,8 +212,48 @@ section[id] { scroll-margin-top: 1rem; }
 .sdlc-review-grid > div { padding: 1.3rem; border-top: 2px solid var(--color-orange); background: #202020; }
 .sdlc-review-grid span { color: #ffad73; font-size: .78rem; font-weight: 700; text-transform: uppercase; }
 .sdlc-review-grid p { margin: .8rem 0 0; color: #bbb; line-height: 1.5; }
+.sdlc-toggle { display: flex; margin: 2rem 0 1rem; gap: .55rem; }
+.sdlc-toggle button { padding: .65rem 1rem; border: 1px solid var(--color-border); border-radius: 999px; background: #202020; color: #aaa; text-transform: capitalize; cursor: pointer; }
+.sdlc-toggle button:hover, .sdlc-toggle button.active { border-color: var(--color-orange); background: var(--color-orange-soft); color: white; }
+.sdlc-delivery-flow { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--color-border); border-radius: 1rem; background: #202020; overflow: hidden; }
+.sdlc-delivery-flow div { position: relative; min-height: 130px; padding: 1.2rem; border-right: 1px solid var(--color-border); }
+.sdlc-delivery-flow div:last-child { border-right: 0; }
+.sdlc-delivery-flow span { color: var(--color-orange); font: .7rem Consolas, monospace; }
+.sdlc-delivery-flow strong { display: block; margin-top: 2.2rem; font-size: .95rem; }
+.sdlc-delivery-flow i { position: absolute; top: 50%; right: -.45rem; z-index: 1; color: var(--color-orange); font-style: normal; }
+.sdlc-example { max-width: 900px; margin: 1.25rem 0 0; padding: 1rem 1.2rem; border-left: 2px solid var(--sdlc-green); background: rgba(120,214,163,.06); color: #bbb; line-height: 1.6; }
+.sdlc-example strong { color: var(--sdlc-green); }
+.sdlc-testing-layout { display: grid; grid-template-columns: .72fr 1.28fr; border: 1px solid var(--color-border); border-radius: 1.5rem; background: #202020; overflow: hidden; }
+.sdlc-testing-picker { display: grid; border-right: 1px solid var(--color-border); }
+.sdlc-testing-picker button { display: grid; padding: .85rem 1.1rem; border: 0; border-bottom: 1px solid #383838; background: transparent; color: #aaa; text-align: left; cursor: pointer; gap: .2rem; }
+.sdlc-testing-picker button:last-child { border-bottom: 0; }
+.sdlc-testing-picker button:hover, .sdlc-testing-picker button.active { background: var(--color-orange-soft); color: white; box-shadow: inset 3px 0 var(--color-orange); }
+.sdlc-testing-picker span { color: var(--color-orange); font: .68rem Consolas, monospace; }
+.sdlc-testing-picker strong { font-size: .95rem; }
+.sdlc-testing-picker small { color: #777; }
+.sdlc-testing-card { min-height: 500px; padding: clamp(1.5rem, 4vw, 3.5rem); }
+.sdlc-testing-card > span, .sdlc-testing-details strong { color: var(--color-orange); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.sdlc-testing-card h3 { margin: .8rem 0 1rem; font-size: clamp(2rem, 4vw, 3.5rem); }
+.sdlc-testing-card > p { max-width: 620px; color: #bbb; font-size: 1.1rem; line-height: 1.65; }
+.sdlc-testing-details { display: grid; grid-template-columns: 1fr 1fr; margin-top: 3rem; gap: 1.5rem; }
+.sdlc-testing-details > div { padding-top: 1rem; border-top: 1px solid #444; }
+.sdlc-testing-details p { color: #999; line-height: 1.55; }
+.sdlc-metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
+.sdlc-metrics-grid article { padding: 1.5rem; border: 1px solid var(--color-border); border-radius: 1rem; background: #202020; }
+.sdlc-metrics-grid article > span { color: var(--color-orange); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.sdlc-metrics-grid h3 { margin: .8rem 0; font-size: 1.55rem; }
+.sdlc-metrics-grid p { min-height: 75px; color: #aaa; line-height: 1.55; }
+.sdlc-metrics-grid strong { display: block; margin-top: 1.5rem; color: #ddd; font-size: .75rem; text-transform: uppercase; }
+.sdlc-metrics-grid small { display: block; margin-top: .5rem; color: #888; line-height: 1.5; }
+.sdlc-management-list { display: grid; border-top: 1px solid var(--color-border); }
+.sdlc-management-list article { display: grid; grid-template-columns: 70px 1fr; padding: 1.35rem 0; border-bottom: 1px solid var(--color-border); gap: 1rem; }
+.sdlc-management-list article > span { color: var(--color-orange); font: .75rem Consolas, monospace; }
+.sdlc-management-list h3 { margin: 0 0 .35rem; font-size: 1.4rem; }
+.sdlc-management-list strong { color: #ddd; }
+.sdlc-management-list p { max-width: 850px; margin: .65rem 0 0; color: #999; line-height: 1.55; }
+.sdlc-management-list b { color: #ffad73; }
 @media (max-width: 900px) { .sdlc-chapter__hero-grid, .sdlc-methodology-card { grid-template-columns: 1fr; } .sdlc-chapter__orbit { width: min(72vw, 340px); margin-top: 2rem; } .sdlc-methodology-card__details { border-top: 1px solid var(--color-border); border-left: 0; } .sdlc-phase-grid { grid-template-columns: repeat(3, 1fr); } .sdlc-review-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .sdlc-chapter__intro, .sdlc-chapter__section { padding: 6rem 1.25rem; } .sdlc-methodology-picker { grid-template-columns: 1fr; } .sdlc-phase-grid, .sdlc-review-grid { grid-template-columns: 1fr; } .sdlc-phase-grid article { min-height: 0; } .sdlc-flow { align-items: stretch; flex-direction: column; } .sdlc-flow span { justify-content: space-between; } .sdlc-flow span:not(:last-child)::after { content: "↓"; } }
+@media (max-width: 600px) { .sdlc-chapter__intro, .sdlc-chapter__section { padding: 6rem 1.25rem; } .sdlc-methodology-picker { grid-template-columns: 1fr; } .sdlc-phase-grid, .sdlc-review-grid, .sdlc-metrics-grid { grid-template-columns: 1fr; } .sdlc-phase-grid article { min-height: 0; } .sdlc-flow { align-items: stretch; flex-direction: column; } .sdlc-flow span { justify-content: space-between; } .sdlc-flow span:not(:last-child)::after { content: "↓"; } .sdlc-delivery-flow { grid-template-columns: 1fr; } .sdlc-delivery-flow div { min-height: 0; border-right: 0; border-bottom: 1px solid var(--color-border); } .sdlc-delivery-flow div:last-child { border-bottom: 0; } .sdlc-delivery-flow strong { margin-top: .7rem; } .sdlc-delivery-flow i { top: auto; right: 1rem; bottom: -.55rem; transform: rotate(90deg); } .sdlc-testing-layout { grid-template-columns: 1fr; } .sdlc-testing-picker { max-height: 300px; border-right: 0; border-bottom: 1px solid var(--color-border); overflow-y: auto; } .sdlc-testing-card { min-height: 0; } .sdlc-testing-details { grid-template-columns: 1fr; margin-top: 2rem; gap: .5rem; } }
 
 .custom-cursor {
   position: fixed;

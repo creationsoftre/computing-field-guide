@@ -49,8 +49,40 @@ const reviewPoints = [
   ["Good judgment", "Choose the approach that fits the risk, requirements, and team"],
 ];
 
+const testingTypes = [
+  { name: "Unit testing", short: "One piece", purpose: "Verifies an individual function, method, or class behaves as expected in isolation.", practice: "Developers use small, repeatable tests with controlled inputs and mocked dependencies.", example: "A password validator test confirms that an eight-character password with a number is accepted." },
+  { name: "Integration testing", short: "Connections", purpose: "Checks that two or more components, services, or systems work together correctly.", practice: "The test exercises real boundaries such as an API, database, message queue, or payment provider.", example: "A registration test confirms the API saves a new user and sends the expected welcome event." },
+  { name: "System testing", short: "The whole product", purpose: "Validates the complete integrated system against its specified functional and quality requirements.", practice: "Testers use realistic workflows in an environment that resembles production.", example: "A retail system test walks through browsing, checkout, payment, confirmation, and order history." },
+  { name: "Acceptance testing", short: "Business fit", purpose: "Confirms the product meets user, customer, and business needs well enough to accept or release it.", practice: "Customers, product owners, or representative users evaluate agreed acceptance criteria.", example: "A product owner accepts a reporting feature when it exports the required fields and matches the approved format." },
+  { name: "Performance testing", short: "Speed and scale", purpose: "Measures responsiveness, stability, throughput, and scalability under expected or extreme load.", practice: "Teams use load, stress, spike, and endurance tests to observe behavior and bottlenecks.", example: "A load test verifies that a course site responds within two seconds for 5,000 concurrent learners." },
+  { name: "Security testing", short: "Resilience", purpose: "Finds vulnerabilities, unsafe behavior, and weaknesses that could expose systems or data.", practice: "Teams combine scanning, dependency checks, threat modeling, and authorized penetration testing.", example: "A security test confirms a user cannot view another customer’s invoice by changing an ID in the URL." },
+  { name: "Usability testing", short: "Human fit", purpose: "Assesses how easily real users can understand, navigate, and complete tasks in the product.", practice: "Observers give representative users realistic tasks and record confusion, errors, and completion time.", example: "Five new users try to reset a password while the team notes where they hesitate or choose the wrong control." },
+  { name: "Regression testing", short: "Nothing broke", purpose: "Checks that new changes or fixes did not unintentionally break existing behavior.", practice: "A repeatable suite runs after changes, with high-value workflows prioritized for fast feedback.", example: "After changing tax calculations, the team reruns checkout, refunds, receipts, and account-balance tests." },
+];
+
+const metrics = [
+  { name: "Process metrics", focus: "How the work flows", examples: "Cycle time, lead time, team productivity, deployment frequency, velocity", meaning: "Help a team find bottlenecks and improve the way work moves from idea to delivery." },
+  { name: "Product metrics", focus: "What was built", examples: "Code complexity, defect density, test coverage, user satisfaction", meaning: "Show the quality, maintainability, reliability, and usefulness of the software itself." },
+  { name: "Project metrics", focus: "How the project is tracking", examples: "Budget adherence, timeline performance, scope changes, resource utilization", meaning: "Help leaders understand whether the project remains within its agreed constraints." },
+];
+
+const managementSteps = [
+  ["Initiation", "Align on why the project exists.", "A team defines a scheduling app’s goal, identifies students and administrators as stakeholders, and creates a project charter."],
+  ["Planning", "Turn the goal into an executable approach.", "The team creates a work breakdown structure, estimates tasks, sets milestones, assigns resources, and records risks such as unclear requirements."],
+  ["Execution", "Coordinate people and produce the deliverables.", "Developers build the highest-priority scheduling workflow while the project manager removes blockers and keeps communication active."],
+  ["Monitoring & control", "Compare reality with the plan and adjust deliberately.", "A delayed integration is escalated, its schedule impact is documented, and the team decides whether to add capacity or change scope."],
+  ["Closure", "Finish responsibly and capture what was learned.", "The customer accepts the release, documentation is finalized, resources are released, and the team records lessons for the next project."],
+];
+
+const deliveryStages = {
+  waterfall: ["Define requirements", "Design solution", "Build system", "Test system", "Deploy and maintain"],
+  agile: ["Prioritize backlog", "Plan iteration", "Build and test", "Review with customer", "Adapt and repeat"],
+};
+
 function SdlcChapter() {
   const [selectedId, setSelectedId] = useState("waterfall");
+  const [selectedTest, setSelectedTest] = useState(0);
+  const [selectedDelivery, setSelectedDelivery] = useState("waterfall");
   const selected = methodologies.find((methodology) => methodology.id === selectedId);
 
   return (
@@ -118,6 +150,56 @@ function SdlcChapter() {
           <div className="sdlc-phase-grid">
             {phases.map(([number, title, description]) => <article key={title}><span>{number}</span><h3>{title}</h3><p>{description}</p></article>)}
           </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="sdlc-chapter__section" id="sdlc-delivery">
+        <div className="sdlc-chapter__content">
+          <p className="section-label">Method in motion</p>
+          <h2>The stages change with the rhythm.</h2>
+          <p className="sdlc-chapter__description">Both approaches plan, build, test, and deliver. Waterfall usually completes those stages in larger sequential gates; Agile revisits them in short iterations.</p>
+          <div className="sdlc-toggle" role="tablist" aria-label="Delivery stage comparison">
+            {Object.keys(deliveryStages).map((model) => <button className={selectedDelivery === model ? "active" : ""} type="button" role="tab" aria-selected={selectedDelivery === model} onClick={() => setSelectedDelivery(model)} key={model}>{model}</button>)}
+          </div>
+          <div className="sdlc-delivery-flow">{deliveryStages[selectedDelivery].map((stage, index) => <div key={stage}><span>{String(index + 1).padStart(2, "0")}</span><strong>{stage}</strong>{index < 4 && <i>→</i>}</div>)}</div>
+          <p className="sdlc-example"><strong>Example:</strong> {selectedDelivery === "waterfall" ? "A hospital system may complete and approve requirements and design before implementation because compliance and traceability are critical." : "A learning product may release a basic enrollment flow, observe students using it, and reprioritize the next iteration from that feedback."}</p>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="sdlc-chapter__section sdlc-chapter__section--alt" id="sdlc-testing">
+        <div className="sdlc-chapter__content">
+          <p className="section-label">Quality assurance</p>
+          <h2>Testing is a conversation with risk.</h2>
+          <p className="sdlc-chapter__description">No single test proves that software is good. Each type asks a different question, from “does this function work?” to “can a real person use this safely?”</p>
+          <div className="sdlc-testing-layout">
+            <div className="sdlc-testing-picker" role="tablist" aria-label="Software testing types">
+              {testingTypes.map((test, index) => <button className={selectedTest === index ? "active" : ""} type="button" role="tab" aria-selected={selectedTest === index} onClick={() => setSelectedTest(index)} key={test.name}><span>{String(index + 1).padStart(2, "0")}</span><strong>{test.name}</strong><small>{test.short}</small></button>)}
+            </div>
+            <div className="sdlc-testing-card" role="tabpanel">
+              <span>{String(selectedTest + 1).padStart(2, "0")} / {testingTypes[selectedTest].short}</span>
+              <h3>{testingTypes[selectedTest].name}</h3>
+              <p>{testingTypes[selectedTest].purpose}</p>
+              <div className="sdlc-testing-details"><div><strong>In practice</strong><p>{testingTypes[selectedTest].practice}</p></div><div><strong>Example</strong><p>{testingTypes[selectedTest].example}</p></div></div>
+            </div>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="sdlc-chapter__section" id="sdlc-metrics">
+        <div className="sdlc-chapter__content">
+          <p className="section-label">Measurement</p>
+          <h2>Metrics turn a feeling into a signal.</h2>
+          <p className="sdlc-chapter__description">A metric is useful when it answers a decision-making question. The goal is not to collect numbers; it is to notice risk, understand quality, and improve the next decision.</p>
+          <div className="sdlc-metrics-grid">{metrics.map((metric) => <article key={metric.name}><span>{metric.name}</span><h3>{metric.focus}</h3><p>{metric.meaning}</p><strong>Examples</strong><small>{metric.examples}</small></article>)}</div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="sdlc-chapter__section sdlc-chapter__section--alt" id="sdlc-management">
+        <div className="sdlc-chapter__content">
+          <p className="section-label">Project management</p>
+          <h2>Move the project from intent to closure.</h2>
+          <p className="sdlc-chapter__description">Project management is the coordination layer around the technical work: aligning people, scope, time, resources, risks, communication, and acceptance.</p>
+          <div className="sdlc-management-list">{managementSteps.map(([title, summary, example], index) => <article key={title}><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{title}</h3><strong>{summary}</strong><p><b>Example:</b> {example}</p></div></article>)}</div>
         </div>
       </AnimatedSection>
 

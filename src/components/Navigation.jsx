@@ -20,7 +20,11 @@ const sdlcLinks = [
   { id: "sdlc", label: "Overview", icon: "01" },
   { id: "sdlc-methodologies", label: "Methods", icon: "02" },
   { id: "sdlc-phases", label: "Phases", icon: "03" },
-  { id: "sdlc-review", label: "Review", icon: "04" },
+  { id: "sdlc-delivery", label: "Delivery", icon: "04" },
+  { id: "sdlc-testing", label: "Testing", icon: "05" },
+  { id: "sdlc-metrics", label: "Metrics", icon: "06" },
+  { id: "sdlc-management", label: "Management", icon: "07" },
+  { id: "sdlc-review", label: "Review", icon: "08" },
 ];
 
 const menuVariants = {
