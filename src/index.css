@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'PEACE-SANS';
+  src: url('./assets/fonts/Peace Sans Webfont.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap; /* Crucial: Prevents invisible text while loading */
+}
+
+@font-face {
+  font-family: 'Open-Sauce';
+  src: url('./assets/fonts/OpenSauceSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap; /* Crucial: Prevents invisible text while loading */
+}
+
 * {
   box-sizing: border-box;
 }
@@ -11,6 +27,8 @@
   --color-orange: #f97316;
   --color-orange-dark: #c65308;
   --color-orange-soft: rgba(249, 115, 22, 0.12);
+  --font-headings: 'Open-Sauce', system-ui, sans-serif;
+  --font-body: 'Open-Sauce', system-ui, sans-serif;
 }
 
 html {
@@ -21,9 +39,14 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
   background-color: var(--color-background);
   color: var(--color-text);
+}
+
+h1, h2, h3, h4, h5, h6, .brand-text {
+  font-family: var(--font-headings);
+  text-transform: uppercase;
 }
 
 button,

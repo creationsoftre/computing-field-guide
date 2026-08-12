@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
-const links = [
+const dsaLinks = [
   { id: "overview", label: "Overview", icon: "01" },
   { id: "big-o-intro", label: "Big O", icon: "02" },
   { id: "structures", label: "Structures", icon: "03" },
@@ -10,6 +10,17 @@ const links = [
   { id: "search-algorithms", label: "Search", icon: "06" },
   { id: "sort-algorithms", label: "Sorting", icon: "07" },
   { id: "databases", label: "Databases", icon: "08" },
+  { id: "sdlc", label: "SDLC", icon: "09" },
+  { id: "sdlc-methodologies", label: "Methods", icon: "10" },
+  { id: "sdlc-phases", label: "Phases", icon: "11" },
+  { id: "sdlc-review", label: "Review", icon: "12" },
+];
+
+const sdlcLinks = [
+  { id: "sdlc", label: "Overview", icon: "01" },
+  { id: "sdlc-methodologies", label: "Methods", icon: "02" },
+  { id: "sdlc-phases", label: "Phases", icon: "03" },
+  { id: "sdlc-review", label: "Review", icon: "04" },
 ];
 
 const menuVariants = {
@@ -22,8 +33,9 @@ const itemVariants = {
   open: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { type: "spring", stiffness: 480, damping: 28 } },
 };
 
-function Navigation() {
-  const [active, setActive] = useState("overview");
+function Navigation({ topic, onHome }) {
+  const links = topic === "sdlc" ? sdlcLinks : dsaLinks;
+  const [active, setActive] = useState(links[0].id);
   const [open, setOpen] = useState(false);
   const navigationRef = useRef(null);
 
@@ -44,7 +56,7 @@ function Navigation() {
       window.removeEventListener("scroll", updateActiveSection);
       window.removeEventListener("resize", updateActiveSection);
     };
-  }, []);
+  }, [links]);
 
   useEffect(() => {
     const dismiss = (event) => {
@@ -76,6 +88,7 @@ function Navigation() {
         )}
       </AnimatePresence>
 
+      <button className="fab-nav__home" type="button" onClick={onHome} aria-label="Return to topic selection">Topics</button>
       <div className="fab-nav__current" aria-hidden="true"><span>{current.icon}</span>{current.label}</div>
       <motion.button className="fab-nav__button" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-controls="section-navigation" aria-label={open ? "Close section navigation" : `Open section navigation. Current section: ${current.label}`} whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.92 }} transition={{ type: "spring", stiffness: 500, damping: 28 }}>
         <motion.span className="fab-nav__ring" animate={{ scale: open ? 1.16 : 1, opacity: open ? 0 : .45 }} transition={{ duration: .3 }} />
