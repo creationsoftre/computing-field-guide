@@ -93,6 +93,15 @@ const nfrs = [
   ["Testability", "Can behavior be verified?", "Core business rules should have automated tests and clear seams for dependencies."],
 ];
 
+const prioritizationFrameworks = [
+  { name: "RICE", focus: "Score reach against impact, confidence, and effort.", formula: "(Reach × Impact × Confidence) ÷ Effort", example: "Use when you have enough data to compare several roadmap ideas and need a defensible ranking.", bestFor: "Data-informed product planning" },
+  { name: "Kano", focus: "Classify features by how they affect customer satisfaction.", formula: "Basic needs → Performance features → Delighters", example: "A reliable login is a basic need; faster search is a performance feature; a surprise study streak is a delighter.", bestFor: "Customer experience and satisfaction" },
+  { name: "MoSCoW", focus: "Separate requirements by their necessity for the release.", formula: "Must have / Should have / Could have / Won’t have", example: "For a first release, account creation may be a Must while social sharing is a Could.", bestFor: "Scope and MVP conversations" },
+  { name: "Value vs. effort", focus: "Place work on a two-by-two matrix using expected value and implementation effort.", formula: "High value + low effort = quick win", example: "A small accessibility fix with broad user benefit may be done before a large, low-value visual refresh.", bestFor: "Fast team alignment" },
+  { name: "Opportunity scoring", focus: "Find outcomes customers consider important but currently poorly satisfied.", formula: "Importance + max(Importance − Satisfaction, 0)", example: "If course search is importance 9 and satisfaction 4, its opportunity score is 14.", bestFor: "Backlog discovery and customer research" },
+  { name: "Cost of delay", focus: "Estimate the economic value lost while work waits.", formula: "Value per unit of time ÷ implementation time", example: "A compliance deadline or revenue opportunity may outrank a feature with a higher long-term benefit but no time pressure.", bestFor: "Time-sensitive decisions" },
+];
+
 const useCases = [
   {
     name: "Enroll in a course",
@@ -148,6 +157,7 @@ function SdlcChapter() {
   const [selectedDelivery, setSelectedDelivery] = useState("waterfall");
   const [selectedUml, setSelectedUml] = useState(0);
   const [selectedUseCase, setSelectedUseCase] = useState(0);
+  const [selectedFramework, setSelectedFramework] = useState(0);
   const selected = methodologies.find((methodology) => methodology.id === selectedId);
 
   return (
@@ -330,6 +340,18 @@ function SdlcChapter() {
           <p className="sdlc-chapter__description">Mockups communicate the proposed interface before the product is built. Low fidelity answers “where does everything go?” High fidelity answers “what will the real experience feel like?”</p>
           <div className="mockup-grid"><article><div className="mockup-label"><span>01 / Low fidelity</span><strong>Structure before styling</strong></div><LowFidelityMockup /><p>Uses simple shapes and placeholders to test layout, hierarchy, navigation, and task flow without distracting decisions about color or branding.</p><small>Best for: early exploration, fast feedback, and inexpensive changes.</small></article><article><div className="mockup-label"><span>02 / High fidelity</span><strong>Experience before code</strong></div><HighFidelityMockup /><p>Represents the intended visual design with real content, typography, color, spacing, controls, and interaction details.</p><small>Best for: usability validation, stakeholder alignment, and implementation guidance.</small></article></div>
           <div className="sdlc-example"><strong>Design progression:</strong> Requirement → use case → low-fidelity flow → high-fidelity mockup → technical design → implementation and tests.</div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="sdlc-chapter__section sdlc-chapter__section--alt" id="sdlc-prioritization">
+        <div className="sdlc-chapter__content">
+          <p className="section-label">Product decision-making</p>
+          <h2>Prioritize what creates the most value next.</h2>
+          <p className="sdlc-chapter__description">A prioritization framework gives a team consistent criteria for ranking ideas against customer value, business goals, effort, risk, and timing. The framework should make the decision clearer—not pretend that estimates are perfectly objective.</p>
+          <div className="prioritization-picker" role="tablist" aria-label="Prioritization frameworks">{prioritizationFrameworks.map((framework, index) => <button className={selectedFramework === index ? "active" : ""} type="button" role="tab" aria-selected={selectedFramework === index} onClick={() => setSelectedFramework(index)} key={framework.name}><span>{String(index + 1).padStart(2, "0")}</span><strong>{framework.name}</strong></button>)}</div>
+          <div className="prioritization-card" role="tabpanel"><div><span className="use-case-card__eyebrow">Framework / {prioritizationFrameworks[selectedFramework].bestFor}</span><h3>{prioritizationFrameworks[selectedFramework].name}</h3><p>{prioritizationFrameworks[selectedFramework].focus}</p><code>{prioritizationFrameworks[selectedFramework].formula}</code></div><div><strong>Example in practice</strong><p>{prioritizationFrameworks[selectedFramework].example}</p><strong>Watch for</strong><p>Scores support discussion; they do not replace product judgment, stakeholder alignment, or a review of new information.</p></div></div>
+          <div className="prioritization-process"><span>Identify work</span><i>→</i><span>Define criteria</span><i>→</i><span>Score or map</span><i>→</i><span>Rank and revisit</span></div>
+          <p className="source-note">Framework summaries informed by <a href="https://www.atlassian.com/agile/product-management/prioritization-framework" target="_blank" rel="noreferrer">Atlassian’s prioritization frameworks guide</a>.</p>
         </div>
       </AnimatedSection>
 

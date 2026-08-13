@@ -27,6 +27,7 @@ const sdlcLinks = [
   { id: "sdlc-nfr", label: "NFRs", icon: "12" },
   { id: "sdlc-use-cases", label: "Use Cases", icon: "13" },
   { id: "sdlc-mockups", label: "Mockups", icon: "14" },
+  { id: "sdlc-prioritization", label: "Prioritization", icon: "15" },
 ];
 
 const menuVariants = {
