@@ -10,10 +10,6 @@ const dsaLinks = [
   { id: "search-algorithms", label: "Search", icon: "06" },
   { id: "sort-algorithms", label: "Sorting", icon: "07" },
   { id: "databases", label: "Databases", icon: "08" },
-  { id: "sdlc", label: "SDLC", icon: "09" },
-  { id: "sdlc-methodologies", label: "Methods", icon: "10" },
-  { id: "sdlc-phases", label: "Phases", icon: "11" },
-  { id: "sdlc-review", label: "Review", icon: "12" },
 ];
 
 const sdlcLinks = [
@@ -24,7 +20,13 @@ const sdlcLinks = [
   { id: "sdlc-testing", label: "Testing", icon: "05" },
   { id: "sdlc-metrics", label: "Metrics", icon: "06" },
   { id: "sdlc-management", label: "Management", icon: "07" },
-  { id: "sdlc-review", label: "Review", icon: "08" },
+  { id: "sdlc-design", label: "Design", icon: "08" },
+  { id: "sdlc-uml", label: "UML", icon: "09" },
+  { id: "sdlc-data-models", label: "DFD / ERD", icon: "10" },
+  { id: "sdlc-dfd-erd", label: "Compare", icon: "11" },
+  { id: "sdlc-nfr", label: "NFRs", icon: "12" },
+  { id: "sdlc-use-cases", label: "Use Cases", icon: "13" },
+  { id: "sdlc-mockups", label: "Mockups", icon: "14" },
 ];
 
 const menuVariants = {
