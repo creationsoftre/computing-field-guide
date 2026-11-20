@@ -15,6 +15,9 @@ import DatabaseRelationships from "./components/DatabaseRelationships";
 import Navigation from "./components/Navigation";
 import SdlcChapter from "./components/SdlcChapter";
 import TopicLanding from "./components/TopicLanding";
+import ArchitectureChapter from "./components/ArchitectureChapter";
+import StudyReview from "./components/StudyReview";
+import GrcChapter from "./components/GrcChapter";
 import "./App.css";
 
 function App() {
@@ -43,8 +46,9 @@ function App() {
           <SearchSortComplexity category="sort" />
           <SortingByStructure />
           <DatabaseRelationships />
+          <StudyReview topic="dsa" />
         </>
-      ) : <SdlcChapter />}
+      ) : topic === "sdlc" ? <><SdlcChapter /><StudyReview topic="sdlc" /></> : topic === "architecture" ? <><ArchitectureChapter /><StudyReview topic="architecture" /></> : <GrcChapter />}
     </main>
   );
 }

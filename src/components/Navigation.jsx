@@ -10,6 +10,7 @@ const dsaLinks = [
   { id: "search-algorithms", label: "Search", icon: "06" },
   { id: "sort-algorithms", label: "Sorting", icon: "07" },
   { id: "databases", label: "Databases", icon: "08" },
+  { id: "dsa-study", label: "Study review", icon: "09" },
 ];
 
 const sdlcLinks = [
@@ -18,16 +19,51 @@ const sdlcLinks = [
   { id: "sdlc-phases", label: "Phases", icon: "03" },
   { id: "sdlc-delivery", label: "Delivery", icon: "04" },
   { id: "sdlc-testing", label: "Testing", icon: "05" },
-  { id: "sdlc-metrics", label: "Metrics", icon: "06" },
-  { id: "sdlc-management", label: "Management", icon: "07" },
-  { id: "sdlc-design", label: "Design", icon: "08" },
-  { id: "sdlc-uml", label: "UML", icon: "09" },
-  { id: "sdlc-data-models", label: "DFD / ERD", icon: "10" },
-  { id: "sdlc-dfd-erd", label: "Compare", icon: "11" },
-  { id: "sdlc-nfr", label: "NFRs", icon: "12" },
-  { id: "sdlc-use-cases", label: "Use Cases", icon: "13" },
-  { id: "sdlc-mockups", label: "Mockups", icon: "14" },
-  { id: "sdlc-prioritization", label: "Prioritization", icon: "15" },
+  { id: "sdlc-quality", label: "QA + Deploy", icon: "06" },
+  { id: "sdlc-metrics", label: "Metrics", icon: "07" },
+  { id: "sdlc-management", label: "Management", icon: "08" },
+  { id: "sdlc-design", label: "Design", icon: "09" },
+  { id: "sdlc-uml", label: "UML", icon: "10" },
+  { id: "sdlc-data-models", label: "DFD / ERD", icon: "11" },
+  { id: "sdlc-dfd-erd", label: "Compare", icon: "12" },
+  { id: "sdlc-nfr", label: "NFRs", icon: "13" },
+  { id: "sdlc-use-cases", label: "Use Cases", icon: "14" },
+  { id: "sdlc-mockups", label: "Mockups", icon: "15" },
+  { id: "sdlc-prioritization", label: "Prioritization", icon: "16" },
+  { id: "sdlc-study", label: "Study review", icon: "17" },
+];
+
+const architectureLinks = [
+  { id: "architecture", label: "Overview", icon: "01" },
+  { id: "architecture-oop", label: "OOP vs. procedural", icon: "02" },
+  { id: "architecture-patterns", label: "Patterns", icon: "03" },
+  { id: "architecture-ddd", label: "DDD", icon: "04" },
+  { id: "architecture-aggregate", label: "Aggregate lab", icon: "05" },
+  { id: "architecture-recap", label: "Recap", icon: "06" },
+  { id: "architecture-chapter2", label: "Chapter 2", icon: "07" },
+  { id: "architecture-decisions", label: "Decisions", icon: "08" },
+  { id: "architecture-abstraction", label: "Abstraction", icon: "09" },
+  { id: "architecture-refactoring", label: "Refactoring", icon: "10" },
+  { id: "architecture-maintenance", label: "Maintenance", icon: "11" },
+  { id: "architecture-analysis", label: "UML + ER", icon: "12" },
+  { id: "architecture-patterns-analysis", label: "Architecture patterns", icon: "13" },
+  { id: "architecture-decisions-analysis", label: "Architecture decisions", icon: "14" },
+  { id: "architecture-systems-thinking", label: "Systems thinking", icon: "15" },
+  { id: "architecture-implementation", label: "Style selection", icon: "16" },
+  { id: "architecture-deployment", label: "Deployment", icon: "17" },
+  { id: "architecture-modeling-prototype", label: "Model + prototype", icon: "18" },
+  { id: "architecture-study", label: "Study review", icon: "19" },
+];
+
+const grcLinks = [
+  { id: "grc-overview", label: "Overview", icon: "01" },
+  { id: "grc-map", label: "The GRC map", icon: "02" },
+  { id: "grc-foundations", label: "Foundations", icon: "03" },
+  { id: "grc-risk", label: "Risk", icon: "04" },
+  { id: "grc-controls", label: "Controls", icon: "05" },
+  { id: "grc-continuity", label: "Continuity", icon: "06" },
+  { id: "grc-audit", label: "Audit", icon: "07" },
+  { id: "grc-glossary", label: "Glossary", icon: "08" },
 ];
 
 const menuVariants = {
@@ -41,7 +77,7 @@ const itemVariants = {
 };
 
 function Navigation({ topic, onHome }) {
-  const links = topic === "sdlc" ? sdlcLinks : dsaLinks;
+  const links = topic === "sdlc" ? sdlcLinks : topic === "architecture" ? architectureLinks : topic === "grc" ? grcLinks : dsaLinks;
   const [active, setActive] = useState(links[0].id);
   const [open, setOpen] = useState(false);
   const navigationRef = useRef(null);

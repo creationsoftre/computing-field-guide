@@ -53,6 +53,92 @@ const testingTypes = [
   { name: "Regression testing", short: "Nothing broke", purpose: "Checks that new changes or fixes did not unintentionally break existing behavior.", practice: "A repeatable suite runs after changes, with high-value workflows prioritized for fast feedback.", example: "After changing tax calculations, the team reruns checkout, refunds, receipts, and account-balance tests." },
 ];
 
+const testPerspectives = [
+  ["White-box", "Inside the code", "The tester knows the implementation and checks paths, branches, conditions, and internal logic. Unit tests are commonly white-box tests."],
+  ["Black-box", "From the outside", "The tester focuses on inputs and observable outputs without needing to know how the code works. Acceptance and system tests often use this perspective."],
+  ["Gray-box", "Some internal knowledge", "The tester has limited knowledge of architecture, data, or interfaces and uses it to target stronger scenarios without inspecting every line."],
+];
+
+const nonFunctionalTests = [
+  ["Performance", "Is it fast and responsive?", "Measure latency, throughput, and resource use under a defined workload."],
+  ["Compatibility", "Does it work across environments?", "Check browsers, operating systems, devices, screen sizes, databases, and integrations."],
+  ["Security", "Can it protect people and data?", "Probe authentication, authorization, input validation, secrets, dependencies, and common vulnerabilities."],
+  ["Load", "Does it hold up under demand?", "Apply expected concurrent users, then observe capacity, failure behavior, and recovery."],
+];
+
+const tddSteps = ["Write a failing test", "Write the smallest code that passes", "Refactor without changing behavior"];
+
+const requirementChecks = [
+  ["Clarity and specificity", "Can two people interpret it the same way? Replace vague words such as fast or easy with observable behavior."],
+  ["Feasibility", "Can the team deliver it with the available technology, time, budget, skills, and data?"],
+  ["Business alignment", "Does it support a measurable business goal, user outcome, or compliance obligation?"],
+  ["Prioritization", "Is its release value clear compared with effort, urgency, risk, and dependencies?"],
+  ["Completeness and consistency", "Are normal, alternate, error, data, and permission paths covered without contradictions?"],
+  ["Scalability and future-proofing", "Will the requirement still work as users, data, integrations, and regulations grow?"],
+  ["Stakeholder alignment", "Have the people who build, use, support, approve, and govern it agreed?"],
+  ["Testability", "Can the team prove it is satisfied with a repeatable check and a clear pass condition?"],
+  ["Compliance and risk", "Does it identify regulatory duties, sensitive data, failure impact, and mitigation plans?"],
+];
+
+const benchmarks = [
+  ["Baseline", "Measure the current experience before making a change.", "Login p95 latency: 1.8 s"],
+  ["Target", "Set a specific threshold tied to the requirement or user outcome.", "Login p95 latency: ≤ 1.0 s"],
+  ["Method", "Keep environment, data, workload, and measurement rules consistent.", "Same browser, network, dataset, and 500-user scenario"],
+  ["Decision", "Use the result to choose, tune, release, or investigate.", "Release only if the target passes without new critical defects"],
+];
+
+const testPlanSteps = [
+  ["Scope", "What is being tested, what is explicitly out of scope, and which risks matter most?"],
+  ["Objectives", "Translate requirements into observable outcomes, such as a successful enrollment or a response under two seconds."],
+  ["Strategy", "Choose test levels, test data, environments, automation, exploratory testing, and the order of execution."],
+  ["Environment", "Document the browser, operating system, services, database state, feature flags, credentials, and versions."],
+  ["Cases and data", "Cover happy paths, invalid input, boundaries, permissions, alternate flows, and realistic data."],
+  ["Entry and exit", "Define when testing can start and what must be true before release: pass rate, severity limits, and approvals."],
+  ["Defect flow", "Record steps to reproduce, expected versus actual behavior, evidence, severity, owner, and retest result."],
+];
+
+const qaWorkflow = [
+  ["Prevent", "Review requirements, designs, and code early so defects are cheaper to avoid than to repair."],
+  ["Verify", "Run automated and manual checks at the right level: unit, integration, system, acceptance, and quality attributes."],
+  ["Investigate", "Use logs, screenshots, traces, and a minimal reproduction to understand whether a failure is a product or environment issue."],
+  ["Improve", "Look for recurring causes, strengthen the test suite, and update the process instead of only fixing one symptom."],
+];
+
+const deploymentStrategies = [
+  ["Big bang", "Release the whole change at once. Simple to coordinate, but failures affect everyone and rollback can be stressful."],
+  ["Rolling", "Replace instances gradually. Keeps capacity available, but mixed application versions must work together."],
+  ["Blue-green", "Keep old and new environments side by side, switch traffic when ready, and switch back quickly if needed."],
+  ["Canary", "Expose the change to a small percentage of users first, compare health signals, then expand the rollout."],
+  ["Feature flags", "Deploy code separately from activation. Teams can enable, disable, or target a feature without a full redeploy."],
+];
+
+const realWorldTools = [
+  ["Browser / UI", "Selenium, Playwright, Cypress", "Automate user journeys and regression checks in real browsers."],
+  ["Unit / API", "JUnit, pytest, Jest, Postman", "Check small pieces and service contracts quickly and repeatedly."],
+  ["Performance", "JMeter, k6, Gatling", "Generate controlled traffic and measure latency, throughput, and errors."],
+  ["Security", "OWASP ZAP, Snyk, Dependabot", "Find application, dependency, and configuration weaknesses."],
+  ["CI / delivery", "GitHub Actions, Jenkins, GitLab CI", "Run checks, package builds, deploy environments, and publish evidence."],
+  ["Observability", "Logs, metrics, traces, Grafana", "Detect regressions and understand what production users experience."],
+];
+
+const methodologyLandscape = [
+  ["Waterfall", "Sequential phases", "Stable requirements and formal approvals"],
+  ["Agile", "Iterative delivery", "Changing requirements and frequent feedback"],
+  ["Scrum", "Time-boxed sprints", "A product backlog and an accountable product team"],
+  ["Kanban", "Continuous flow", "Visualizing work and limiting work in progress"],
+  ["Extreme Programming", "Engineering practices", "Pairing, TDD, refactoring, and frequent integration"],
+  ["Lean", "Remove waste", "Delivering customer value with fewer delays and handoffs"],
+  ["DevOps", "Build and run together", "Automation, shared ownership, and reliable delivery"],
+  ["DevSecOps", "Security throughout", "Making security checks part of everyday delivery"],
+  ["Spiral", "Risk-driven cycles", "Exploring high-risk systems through repeated prototypes"],
+  ["V-Model", "Verification mapped to validation", "Traceable, regulated, or safety-critical work"],
+  ["Prototype", "Learn before building", "Unclear user needs or technically uncertain ideas"],
+  ["RAD", "Rapid construction", "Fast feedback with reusable components and time-boxed work"],
+  ["Incremental", "Deliver in slices", "Releasing useful parts while the product grows"],
+  ["Iterative", "Improve through repeats", "Learning from each version before the next"],
+  ["Hybrid", "Tailored combination", "Projects with fixed governance and flexible implementation"],
+];
+
 const metrics = [
   { name: "Process metrics", focus: "How the work flows", examples: "Cycle time, lead time, team productivity, deployment frequency, velocity", meaning: "Help a team find bottlenecks and improve the way work moves from idea to delivery." },
   { name: "Product metrics", focus: "What was built", examples: "Code complexity, defect density, test coverage, user satisfaction", meaning: "Show the quality, maintainability, reliability, and usefulness of the software itself." },
@@ -257,6 +343,26 @@ function SdlcChapter() {
               <div className="sdlc-testing-details"><div><strong>In practice</strong><p>{testingTypes[selectedTest].practice}</p></div><div><strong>Example</strong><p>{testingTypes[selectedTest].example}</p></div></div>
             </div>
           </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="sdlc-chapter__section" id="sdlc-quality">
+        <div className="sdlc-chapter__content">
+          <p className="section-label">09 / Software quality assurance and deployment</p>
+          <h2>Build confidence before the release reaches users.</h2>
+          <p className="sdlc-chapter__description">Quality assurance is the deliberate practice of preventing defects, finding risk, and verifying that software is fit for use. Deployment turns a tested build into a controlled release that can be observed and recovered.</p>
+          <div className="qa-subsection"><p className="qa-kicker">The QA mindset</p><h3>Quality is built into the work, not added at the end.</h3><div className="qa-workflow-grid">{qaWorkflow.map(([name, description]) => <article key={name}><strong>{name}</strong><p>{description}</p></article>)}</div></div>
+          <div className="qa-subsection"><p className="qa-kicker">Testing perspectives</p><h3>Three ways to look for defects.</h3><div className="qa-perspective-grid">{testPerspectives.map(([name, focus, description]) => <article key={name}><span>{name}</span><strong>{focus}</strong><p>{description}</p></article>)}</div></div>
+          <div className="qa-subsection"><p className="qa-kicker">Functional vs. non-functional testing</p><div className="qa-comparison"><div><span>Functional testing</span><h3>Does the software do the right thing?</h3><p>Unit, system, acceptance, and usability testing verify behavior and user workflows.</p><strong>Example: Selenium submits a valid enrollment form and verifies the confirmation message.</strong></div><div><span>Non-functional testing</span><h3>How well does it do that thing?</h3><p>Performance, compatibility, security, and load testing evaluate qualities and constraints.</p><strong>Example: A load test checks that enrollment stays responsive for the expected number of students.</strong></div></div></div>
+          <div className="qa-subsection"><p className="qa-kicker">Non-functional test map</p><div className="qa-nfr-grid">{nonFunctionalTests.map(([name, question, description]) => <article key={name}><span>{name}</span><h3>{question}</h3><p>{description}</p></article>)}</div></div>
+          <div className="qa-subsection qa-subsection--selenium"><p className="qa-kicker">Tool in real work / Selenium</p><div className="qa-tool-grid"><div><h3>Automate the browser. Keep the scenario readable.</h3><p>Selenium drives a real browser to exercise a user journey. A practical smoke test can run on every pull request, while a larger regression suite runs before release.</p><pre><code>{'driver.get("https://example.test/login")\ndriver.find_element(By.ID, "email").send_keys("student@example.test")\ndriver.find_element(By.ID, "submit").click()\nassert "Dashboard" in driver.title'}</code></pre></div><div className="qa-tool-steps"><div><span>01</span><strong>Arrange</strong><p>Start a known test environment and test account.</p></div><div><span>02</span><strong>Act</strong><p>Locate controls, enter data, and perform the workflow.</p></div><div><span>03</span><strong>Assert</strong><p>Verify visible results, URLs, state, and useful error messages.</p></div><div><span>04</span><strong>Report</strong><p>Save screenshots, logs, and browser details when it fails.</p></div></div></div></div>
+          <div className="qa-subsection"><p className="qa-kicker">Test-driven development</p><h3>Let the test describe the next small piece of behavior.</h3><div className="tdd-loop">{tddSteps.map((step, index) => <div key={step}><span>{String(index + 1).padStart(2, "0")}</span><strong>{step}</strong>{index < tddSteps.length - 1 && <i>→</i>}</div>)}</div><p className="sdlc-example"><strong>TDD reminder:</strong> TDD is a development feedback loop, not a replacement for system, acceptance, usability, security, or performance testing.</p></div>
+          <div className="qa-subsection"><p className="qa-kicker">Software testing plan</p><h3>Make the test effort explicit before execution starts.</h3><div className="test-plan-grid">{testPlanSteps.map(([name, description], index) => <article key={name}><span>{String(index + 1).padStart(2, "0")}</span><div><strong>{name}</strong><p>{description}</p></div></article>)}</div><p className="sdlc-example"><strong>Useful distinction:</strong> A test case is one check. A test plan explains the full approach: what will be checked, by whom, where, when, with what data, and what counts as release-ready.</p></div>
+          <div className="qa-subsection"><p className="qa-kicker">Business requirements and benchmarking</p><h3>Turn a request into a measurable release decision.</h3><div className="requirement-grid">{requirementChecks.map(([name, description]) => <article key={name}><strong>{name}</strong><p>{description}</p></article>)}</div><div className="benchmark-grid">{benchmarks.map(([name, description, example]) => <article key={name}><span>{name}</span><p>{description}</p><code>{example}</code></article>)}</div></div>
+          <div className="qa-subsection"><p className="qa-kicker">Deployment strategies</p><h3>The safest release pattern depends on risk and reversibility.</h3><div className="deployment-strategy-grid">{deploymentStrategies.map(([name, description]) => <article key={name}><strong>{name}</strong><p>{description}</p></article>)}</div></div>
+          <div className="qa-subsection"><p className="qa-kicker">Tools used in real work</p><div className="tools-grid">{realWorldTools.map(([category, tools, use]) => <article key={category}><span>{category}</span><strong>{tools}</strong><p>{use}</p></article>)}</div></div>
+          <div className="qa-subsection"><p className="qa-kicker">Methodology reference</p><h3>15 common software development methodologies.</h3><div className="methodology-reference-grid">{methodologyLandscape.map(([name, style, bestFor]) => <article key={name}><strong>{name}</strong><span>{style}</span><p>{bestFor}</p></article>)}</div></div>
+          <div className="qa-subsection qa-deployment"><p className="qa-kicker">Deployment gate</p><div className="deployment-strip"><span>Code</span><i>→</i><span>Automated tests</span><i>→</i><span>Staging</span><i>→</i><span>Acceptance</span><i>→</i><span>Production</span><i>→</i><span>Monitor + rollback</span></div><p className="sdlc-chapter__callout"><strong>Release principle</strong><span>A green test suite is evidence, not a guarantee. Deploy with a rollback plan, monitor the behavior that matters, and treat production feedback as part of quality.</span></p></div>
         </div>
       </AnimatedSection>
 

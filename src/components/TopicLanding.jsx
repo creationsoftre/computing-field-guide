@@ -13,9 +13,25 @@ const topics = [
     id: "sdlc",
     number: "02",
     title: "Software Development Life Cycle",
-    description: "Review Waterfall, Agile, Hybrid, project phases, testing, and the decisions behind each approach.",
-    meta: "4 sections / New topic",
+    description: "Review Waterfall, Agile, Hybrid, quality assurance, Selenium testing, deployment, and the decisions behind each approach.",
+    meta: "16 sections / Updated guide",
     accent: "blue",
+  },
+  {
+    id: "architecture",
+    number: "03",
+    title: "Software Architecture & Design",
+    description: "Understand OOP, design patterns, and domain-driven design through plain language and small interactive examples.",
+    meta: "5 sections / New guide",
+    accent: "green",
+  },
+  {
+    id: "grc",
+    number: "04",
+    title: "Governance, Risk & Compliance",
+    description: "Turn obligations, uncertainty, controls, recovery, and audit evidence into defensible decisions.",
+    meta: "5 modules / Interactive labs",
+    accent: "violet",
   },
 ];
 
