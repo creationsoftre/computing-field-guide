@@ -352,6 +352,13 @@ section[id] { scroll-margin-top: 1rem; }
 .grc-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
 .grc-two-col article h3, .grc-treatment h3 { margin: 0 0 1rem; font-size: 1.65rem; }
 .grc-two-col article p, .grc-treatment p { color: #b8b8c3; line-height: 1.7; }
+.grc-quick-list { display: grid; gap: .7rem; }
+.grc-quick-list > div { padding: .95rem 1rem; border: 1px solid #363743; border-radius: .75rem; background: rgba(255,255,255,.025); }
+.grc-quick-list strong { display: block; margin-bottom: .55rem; color: var(--grc-cyan); font-size: .78rem; letter-spacing: .06rem; text-transform: uppercase; }
+.grc-quick-list ul { display: grid; margin: 0; padding-left: 1.1rem; color: #c0c1cb; gap: .4rem; }
+.grc-quick-list li { padding-left: .2rem; line-height: 1.45; }
+.grc-quick-list li::marker { color: var(--grc-violet); }
+.grc-quick-list li b { color: #f0edf6; }
 .grc-callout { display: grid; margin-top: 1.5rem; padding: 1.2rem 1.4rem; border-left: 2px solid var(--grc-violet); background: rgba(196,156,255,.08); gap: .45rem; }
 .grc-callout strong { color: var(--grc-violet); font-size: .72rem; letter-spacing: .1rem; text-transform: uppercase; } .grc-callout span { color: #d7d4de; line-height: 1.55; }
 .grc-cia { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
