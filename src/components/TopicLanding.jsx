@@ -33,6 +33,14 @@ const topics = [
     meta: "5 modules / Interactive labs",
     accent: "violet",
   },
+  {
+    id: "cloud",
+    number: "05",
+    title: "Cloud Architecture & Computing",
+    description: "Design cloud networks, understand virtualization, secure data, monitor workloads, and connect technology to business needs.",
+    meta: "6 modules / Architecture guide",
+    accent: "cyan",
+  },
 ];
 
 function TopicLanding({ onSelect }) {

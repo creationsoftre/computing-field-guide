@@ -18,6 +18,7 @@ import TopicLanding from "./components/TopicLanding";
 import ArchitectureChapter from "./components/ArchitectureChapter";
 import StudyReview from "./components/StudyReview";
 import GrcChapter from "./components/GrcChapter";
+import CloudChapter from "./components/CloudChapter";
 import "./App.css";
 
 function App() {
@@ -48,7 +49,7 @@ function App() {
           <DatabaseRelationships />
           <StudyReview topic="dsa" />
         </>
-      ) : topic === "sdlc" ? <><SdlcChapter /><StudyReview topic="sdlc" /></> : topic === "architecture" ? <><ArchitectureChapter /><StudyReview topic="architecture" /></> : <GrcChapter />}
+      ) : topic === "sdlc" ? <><SdlcChapter /><StudyReview topic="sdlc" /></> : topic === "architecture" ? <><ArchitectureChapter /><StudyReview topic="architecture" /></> : topic === "grc" ? <GrcChapter /> : <CloudChapter />}
     </main>
   );
 }

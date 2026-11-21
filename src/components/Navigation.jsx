@@ -66,6 +66,18 @@ const grcLinks = [
   { id: "grc-glossary", label: "Glossary", icon: "08" },
 ];
 
+const cloudLinks = [
+  { id: "cloud-overview", label: "Overview", icon: "01" },
+  { id: "cloud-map", label: "Cloud lens", icon: "02" },
+  { id: "cloud-foundations", label: "Foundations", icon: "03" },
+  { id: "cloud-architecture", label: "Architecture", icon: "04" },
+  { id: "cloud-networking", label: "Networking", icon: "05" },
+  { id: "cloud-security", label: "Security", icon: "06" },
+  { id: "cloud-operations", label: "Operations", icon: "07" },
+  { id: "cloud-business", label: "Business", icon: "08" },
+  { id: "cloud-glossary", label: "Glossary", icon: "09" },
+];
+
 const menuVariants = {
   closed: { transition: { staggerChildren: 0.035, staggerDirection: -1 } },
   open: { transition: { delayChildren: 0.04, staggerChildren: 0.055 } },
@@ -77,7 +89,7 @@ const itemVariants = {
 };
 
 function Navigation({ topic, onHome }) {
-  const links = topic === "sdlc" ? sdlcLinks : topic === "architecture" ? architectureLinks : topic === "grc" ? grcLinks : dsaLinks;
+  const links = topic === "sdlc" ? sdlcLinks : topic === "architecture" ? architectureLinks : topic === "grc" ? grcLinks : topic === "cloud" ? cloudLinks : dsaLinks;
   const [active, setActive] = useState(links[0].id);
   const [open, setOpen] = useState(false);
   const navigationRef = useRef(null);
